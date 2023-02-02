@@ -30,4 +30,6 @@ public class ReservaController {
     public Long calcularPeriodo(LocalDate entrada, LocalDate saida) {
         return this.reservaDao.calcularPeriodo(entrada, saida);
     }
+
+    //public void listar()
 }

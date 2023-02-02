@@ -1,5 +1,6 @@
 package dao;
 
+import factory.ConnectionFactory;
 import model.Reserva;
 
 import java.sql.*;
@@ -50,4 +51,28 @@ public class ReservaDao {
         return ChronoUnit.DAYS.between(entrada, saida) + 1;
     }
 
+    public void listarReservas(){
+
+        try(PreparedStatement statement = this.connection.prepareStatement("SELECT id_reserva, data_entrada_reserva, data_saida_reserva, valor_saida_reserva, forma_pagamento_reserva FROM reservas")){
+            statement.execute();
+            ResultSet resultSet = statement.getResultSet();
+
+            while (resultSet.next()){
+                System.out.println(resultSet.getInt("id_reserva"));
+                System.out.println(resultSet.getDate("data_entrada_reserva"));
+                System.out.println(resultSet.getDate("data_saida_reserva"));
+                System.out.println(resultSet.getDouble("valor_saida_reserva"));
+                System.out.println(resultSet.getString("forma_pagamento_reserva"));
+            }
+
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+
+    }
+
+    public static void main(String[] args) {
+        ReservaDao reservaDao = new ReservaDao(new ConnectionFactory().conexao());
+        reservaDao.listarReservas();
+    }
 }

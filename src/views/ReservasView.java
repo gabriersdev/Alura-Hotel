@@ -173,9 +173,9 @@ public class ReservasView extends JFrame {
         panel.add(txtValor);
         txtValor.setColumns(10);
 
-        JLabel lblValor = new JLabel("VALOR DA RESERVA");
+        JLabel lblValor = new JLabel("VALOR DA RESERVA (R$)");
         lblValor.setForeground(SystemColor.textInactiveText);
-        lblValor.setBounds(72, 303, 196, 14);
+        lblValor.setBounds(72, 303, 289, 14);
         lblValor.setFont(new Font("Roboto Black", Font.PLAIN, 18));
         panel.add(lblValor);
 
@@ -333,7 +333,7 @@ public class ReservasView extends JFrame {
 
                         Integer confirmacao = JOptionPane.showConfirmDialog(contentPane,
                                 "O valor previsto para a reserva é R$" +
-                                        valorPrevisto,
+                                        valorPrevisto + ". Deseja continuar?",
                                 "Aviso",
                                 JOptionPane.INFORMATION_MESSAGE,
                                 JOptionPane.YES_OPTION);
