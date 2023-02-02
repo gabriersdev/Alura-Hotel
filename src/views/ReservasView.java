@@ -15,6 +15,7 @@ import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 import controller.ReservaController;
 import model.Reserva;
+import views.utilitarios.Converte;
 
 import java.awt.Font;
 import javax.swing.JComboBox;
@@ -27,6 +28,8 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.Toolkit;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
@@ -163,7 +166,7 @@ public class ReservasView extends JFrame {
         txtValor.setBackground(SystemColor.text);
         txtValor.setHorizontalAlignment(SwingConstants.CENTER);
         txtValor.setForeground(Color.BLACK);
-        txtValor.setBounds(78, 328, 43, 33);
+        txtValor.setBounds(78, 328, 289, 33);
         txtValor.setEditable(false);
         txtValor.setFont(new Font("Roboto Black", Font.BOLD, 17));
         txtValor.setBorder(javax.swing.BorderFactory.createEmptyBorder());
@@ -308,9 +311,41 @@ public class ReservasView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (ReservasView.txtDataE.getDate() != null && ReservasView.txtDataS.getDate() != null) {
+
+                    //Convertendo datas de forma a conseguir definir o período em dias entre a Data de Entrada e a Data de Saída
+                    String dataEntradaTxt = ((JTextField) txtDataE.getDateEditor().getUiComponent()).getText();
+                    String dataSaidaTxt = ((JTextField) txtDataS.getDateEditor().getUiComponent()).getText();
+
+                    String[] dataEntrada = Converte.converterDataParaStrings(Date.valueOf(dataEntradaTxt));
+                    String[] dataSaida = Converte.converterDataParaStrings(Date.valueOf(dataSaidaTxt));
+
+                    LocalDate entrada = LocalDate.of(Integer.valueOf(dataEntrada[0]), Integer.valueOf(dataEntrada[1]), Integer.valueOf(dataEntrada[2]));
+                    LocalDate saida = LocalDate.of(Integer.valueOf(dataSaida[0]), Integer.valueOf(dataSaida[1]), Integer.valueOf(dataSaida[2]));
+
+                    Long diasDiferenca = ChronoUnit.DAYS.between(entrada, saida) + 1;
+
+                    //Verificando se a data está incorreta e solicitando a confirmação
+                    if (diasDiferenca <= 0) {
+                        JOptionPane.showMessageDialog(contentPane, "Data incorreta!", "Aviso", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        Double valorPrevisto = diasDiferenca * 50.0;
+                        txtValor.setText(valorPrevisto.toString());
+
+                        Integer confirmacao = JOptionPane.showConfirmDialog(contentPane,
+                                "O valor previsto para a reserva é R$" +
+                                        valorPrevisto,
+                                "Aviso",
+                                JOptionPane.INFORMATION_MESSAGE,
+                                JOptionPane.YES_OPTION);
+
+                        if(confirmacao == 0){
+                            registraReserva();
+                        }
+                    }
+
                     //RegistroHospede registro = new RegistroHospede();
                     //registro.setVisible(true);
-                    registraReserva();
+                    //registraReserva();
                 } else {
                     JOptionPane.showMessageDialog(null, "Deve preencher todos os campos.");
                 }
@@ -330,7 +365,7 @@ public class ReservasView extends JFrame {
         btnProximo.add(lblSeguinte);
     }
 
-	//Faz o registro de fato, de acordo com os dados retornados do formulário
+    //Faz o registro de fato, de acordo com os dados retornados do formulário
     public void registraReserva() {
         String dataEntradaTxt = ((JTextField) this.txtDataE.getDateEditor().getUiComponent()).getText();
         String dataSaidaTxt = ((JTextField) this.txtDataS.getDateEditor().getUiComponent()).getText();
@@ -338,8 +373,7 @@ public class ReservasView extends JFrame {
         Date dataEntrada = Date.valueOf(dataEntradaTxt);
         Date dataSaida = Date.valueOf(dataSaidaTxt);
 
-        //this.txtValor.getText()
-        Reserva reserva = new Reserva(dataEntrada, dataSaida, "0", this.txtFormaPagamento.getSelectedItem().toString());
+        Reserva reserva = new Reserva(dataEntrada, dataSaida, this.txtValor.getText(), this.txtFormaPagamento.getSelectedItem().toString());
         this.reservaController.salvar(reserva);
 
         JOptionPane.showMessageDialog(contentPane, "Reserva registrada!", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);

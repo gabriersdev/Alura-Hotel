@@ -1,9 +1,9 @@
 # Challenge ONE Hotel Alura
 
-## 🖥️ Tecnologias Utilizadas:
+## Tecnologias Utilizadas:
 
 - Java
-- Eclipse
+- IntelliJ
 - MySql
 - Biblioteca JCalendar
 - Plugin WindowBuilder </br>
