@@ -3,6 +3,8 @@ package dao;
 import model.Reserva;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class ReservaDao {
 
@@ -38,6 +40,14 @@ public class ReservaDao {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public Double valorReserva(Long periodo){
+        return periodo * 50.0;
+    }
+
+    public Long calcularPeriodo(LocalDate entrada, LocalDate saida){
+        return ChronoUnit.DAYS.between(entrada, saida) + 1;
     }
 
 }

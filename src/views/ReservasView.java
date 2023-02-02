@@ -313,8 +313,8 @@ public class ReservasView extends JFrame {
                 if (ReservasView.txtDataE.getDate() != null && ReservasView.txtDataS.getDate() != null) {
 
                     //Convertendo datas de forma a conseguir definir o período em dias entre a Data de Entrada e a Data de Saída
-                    String dataEntradaTxt = ((JTextField) txtDataE.getDateEditor().getUiComponent()).getText();
-                    String dataSaidaTxt = ((JTextField) txtDataS.getDateEditor().getUiComponent()).getText();
+                    String dataEntradaTxt = Converte.converterJTextFieldParaString(txtDataE);
+                    String dataSaidaTxt = Converte.converterJTextFieldParaString(txtDataS);
 
                     String[] dataEntrada = Converte.converterDataParaStrings(Date.valueOf(dataEntradaTxt));
                     String[] dataSaida = Converte.converterDataParaStrings(Date.valueOf(dataSaidaTxt));
@@ -322,13 +322,13 @@ public class ReservasView extends JFrame {
                     LocalDate entrada = LocalDate.of(Integer.valueOf(dataEntrada[0]), Integer.valueOf(dataEntrada[1]), Integer.valueOf(dataEntrada[2]));
                     LocalDate saida = LocalDate.of(Integer.valueOf(dataSaida[0]), Integer.valueOf(dataSaida[1]), Integer.valueOf(dataSaida[2]));
 
-                    Long diasDiferenca = ChronoUnit.DAYS.between(entrada, saida) + 1;
+                    Long diasDiferenca = reservaController.calcularPeriodo(entrada, saida);
 
                     //Verificando se a data está incorreta e solicitando a confirmação
                     if (diasDiferenca <= 0) {
                         JOptionPane.showMessageDialog(contentPane, "Data incorreta!", "Aviso", JOptionPane.ERROR_MESSAGE);
                     } else {
-                        Double valorPrevisto = diasDiferenca * 50.0;
+                        Double valorPrevisto = reservaController.valorReserva(diasDiferenca); //Retorna o valor da reserva segunda a regra de negócio
                         txtValor.setText(valorPrevisto.toString());
 
                         Integer confirmacao = JOptionPane.showConfirmDialog(contentPane,
@@ -338,7 +338,7 @@ public class ReservasView extends JFrame {
                                 JOptionPane.INFORMATION_MESSAGE,
                                 JOptionPane.YES_OPTION);
 
-                        if(confirmacao == 0){
+                        if (confirmacao == 0) {
                             registraReserva();
                         }
                     }
@@ -367,8 +367,8 @@ public class ReservasView extends JFrame {
 
     //Faz o registro de fato, de acordo com os dados retornados do formulário
     public void registraReserva() {
-        String dataEntradaTxt = ((JTextField) this.txtDataE.getDateEditor().getUiComponent()).getText();
-        String dataSaidaTxt = ((JTextField) this.txtDataS.getDateEditor().getUiComponent()).getText();
+        String dataEntradaTxt = Converte.converterJTextFieldParaString(txtDataE);
+        String dataSaidaTxt = Converte.converterJTextFieldParaString(txtDataS);
 
         Date dataEntrada = Date.valueOf(dataEntradaTxt);
         Date dataSaida = Date.valueOf(dataSaidaTxt);
