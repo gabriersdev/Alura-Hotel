@@ -11,7 +11,6 @@ import javax.swing.ImageIcon;
 import java.awt.Color;
 import javax.swing.JTextField;
 
-import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 import controller.ReservaController;
 import model.Reserva;
@@ -26,10 +25,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.Toolkit;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
@@ -53,14 +49,12 @@ public class ReservasView extends JFrame {
      * Launch the application.
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    ReservasView frame = new ReservasView();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                ReservasView frame = new ReservasView();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
@@ -73,7 +67,7 @@ public class ReservasView extends JFrame {
 
         this.reservaController = new ReservaController();
 
-        setIconImage(Toolkit.getDefaultToolkit().getImage(ReservasView.class.getResource("/imagens/aH-40px.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(ReservasView.class.getResource("/images/aH-40px.png")));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 910, 560);
         setResizable(false);
@@ -114,7 +108,7 @@ public class ReservasView extends JFrame {
 
         txtDataE = new JDateChooser();
         txtDataE.getCalendarButton().setBackground(SystemColor.textHighlight);
-        txtDataE.getCalendarButton().setIcon(new ImageIcon(ReservasView.class.getResource("/imagens/icon-reservas.png")));
+        txtDataE.getCalendarButton().setIcon(new ImageIcon(ReservasView.class.getResource("/images/icon-reservas.png")));
         txtDataE.getCalendarButton().setFont(new Font("Roboto", Font.PLAIN, 12));
         txtDataE.setBounds(68, 161, 289, 35);
         txtDataE.getCalendarButton().setBounds(268, 0, 21, 33);
@@ -145,16 +139,14 @@ public class ReservasView extends JFrame {
         panel.add(lblCheckOut);
 
         txtDataS = new JDateChooser();
-        txtDataS.getCalendarButton().setIcon(new ImageIcon(ReservasView.class.getResource("/imagens/icon-reservas.png")));
+        txtDataS.getCalendarButton().setIcon(new ImageIcon(ReservasView.class.getResource("/images/icon-reservas.png")));
         txtDataS.getCalendarButton().setFont(new Font("Roboto", Font.PLAIN, 11));
         txtDataS.setBounds(68, 246, 289, 35);
         txtDataS.getCalendarButton().setBounds(267, 1, 21, 31);
         txtDataS.setBackground(Color.WHITE);
         txtDataS.setFont(new Font("Roboto", Font.PLAIN, 18));
-        txtDataS.addPropertyChangeListener(new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                //Ativa o evento, após o usuário selecionar as datas, o valor da reserva deve ser calculado
-            }
+        txtDataS.addPropertyChangeListener(evt -> {
+            //Ativa o evento, após o usuário selecionar as datas, o valor da reserva deve ser calculado
         });
         txtDataS.setDateFormatString("yyyy-MM-dd");
         txtDataS.getCalendarButton().setBackground(SystemColor.textHighlight);
@@ -208,13 +200,13 @@ public class ReservasView extends JFrame {
         JLabel logo = new JLabel("");
         logo.setBounds(197, 68, 104, 107);
         panel_1.add(logo);
-        logo.setIcon(new ImageIcon(ReservasView.class.getResource("/imagens/Ha-100px.png")));
+        logo.setIcon(new ImageIcon(ReservasView.class.getResource("/images/Ha-100px.png")));
 
         JLabel imagenFondo = new JLabel("");
         imagenFondo.setBounds(0, 140, 500, 409);
         panel_1.add(imagenFondo);
         imagenFondo.setBackground(Color.WHITE);
-        imagenFondo.setIcon(new ImageIcon(ReservasView.class.getResource("/imagens/reservas-img-3.png")));
+        imagenFondo.setIcon(new ImageIcon(ReservasView.class.getResource("/images/reservas-img-3.png")));
 
         JPanel btnexit = new JPanel();
         btnexit.addMouseListener(new MouseAdapter() {
@@ -319,8 +311,8 @@ public class ReservasView extends JFrame {
                     String[] dataEntrada = Converte.converterDataParaStrings(Date.valueOf(dataEntradaTxt));
                     String[] dataSaida = Converte.converterDataParaStrings(Date.valueOf(dataSaidaTxt));
 
-                    LocalDate entrada = LocalDate.of(Integer.valueOf(dataEntrada[0]), Integer.valueOf(dataEntrada[1]), Integer.valueOf(dataEntrada[2]));
-                    LocalDate saida = LocalDate.of(Integer.valueOf(dataSaida[0]), Integer.valueOf(dataSaida[1]), Integer.valueOf(dataSaida[2]));
+                    LocalDate entrada = LocalDate.of(Integer.parseInt(dataEntrada[0]), Integer.parseInt(dataEntrada[1]), Integer.parseInt(dataEntrada[2]));
+                    LocalDate saida = LocalDate.of(Integer.parseInt(dataSaida[0]), Integer.parseInt(dataSaida[1]), Integer.parseInt(dataSaida[2]));
 
                     Long diasDiferenca = reservaController.calcularPeriodo(entrada, saida);
 

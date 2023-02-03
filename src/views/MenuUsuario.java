@@ -46,7 +46,7 @@ public class MenuUsuario extends JFrame {
 	 * Create the frame.
 	 */
 	public MenuUsuario() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(MenuUsuario.class.getResource("/imagens/aH-40px.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MenuUsuario.class.getResource("/images/aH-40px.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 944, 609);
 		contentPane = new JPanel();
@@ -103,7 +103,7 @@ public class MenuUsuario extends JFrame {
 		panelMenu.add(btnBuscar);
 		
 		JLabel lblBusquedaDeReservas = new JLabel("Buscar");
-		lblBusquedaDeReservas.setIcon(new ImageIcon(MenuUsuario.class.getResource("/imagens/pessoas.png")));
+		lblBusquedaDeReservas.setIcon(new ImageIcon(MenuUsuario.class.getResource("/images/pessoas.png")));
 		lblBusquedaDeReservas.setBounds(30, 11, 200, 34);
 		lblBusquedaDeReservas.setHorizontalAlignment(SwingConstants.LEFT);
 		lblBusquedaDeReservas.setForeground(Color.WHITE);
@@ -113,7 +113,7 @@ public class MenuUsuario extends JFrame {
 		JLabel logo = new JLabel("");
 		logo.setBounds(50, 58, 150, 150);
 		panelMenu.add(logo);
-		logo.setIcon(new ImageIcon(MenuUsuario.class.getResource("/imagens/aH-150px.png")));
+		logo.setIcon(new ImageIcon(MenuUsuario.class.getResource("/images/aH-150px.png")));
 		
 		JPanel btnRegistro = new JPanel();
 		btnRegistro.addMouseListener(new MouseAdapter() {
@@ -139,7 +139,7 @@ public class MenuUsuario extends JFrame {
 		btnRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 		
 		labelRegistro = new JLabel("Registro de reservas");
-		labelRegistro.setIcon(new ImageIcon(MenuUsuario.class.getResource("/imagens/reservado.png")));
+		labelRegistro.setIcon(new ImageIcon(MenuUsuario.class.getResource("/images/reservado.png")));
 		labelRegistro.setForeground(SystemColor.text);
 		labelRegistro.setBounds(25, 11, 205, 34);
 		labelRegistro.setFont(new Font("Roboto", Font.PLAIN, 18));

@@ -19,7 +19,6 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.util.Vector;
 
 @SuppressWarnings("serial")
 public class Buscar extends JFrame {
@@ -54,7 +53,7 @@ public class Buscar extends JFrame {
      * Create the frame.
      */
     public Buscar() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(Buscar.class.getResource("/imagens/lOGO-50PX.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(Buscar.class.getResource("/images/lOGO-50PX.png")));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 910, 571);
         contentPane = new JPanel();
@@ -87,7 +86,7 @@ public class Buscar extends JFrame {
         tbReservas = new JTable();
         tbReservas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tbReservas.setFont(new Font("Roboto", Font.PLAIN, 16));
-        panel.addTab("Reservas", new ImageIcon(Buscar.class.getResource("/imagens/reservado.png")), tbReservas, null);
+        panel.addTab("Reservas", new ImageIcon(Buscar.class.getResource("/images/reservado.png")), tbReservas, null);
         modelo = (DefaultTableModel) tbReservas.getModel();
         modelo.addColumn("Numero de Reserva");
         modelo.addColumn("Data Check In");
@@ -98,7 +97,7 @@ public class Buscar extends JFrame {
         tbHospedes = new JTable();
         tbHospedes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tbHospedes.setFont(new Font("Roboto", Font.PLAIN, 16));
-        panel.addTab("Hóspedes", new ImageIcon(Buscar.class.getResource("/imagens/pessoas.png")), tbHospedes, null);
+        panel.addTab("Hóspedes", new ImageIcon(Buscar.class.getResource("/images/pessoas.png")), tbHospedes, null);
         modeloHospedes = (DefaultTableModel) tbHospedes.getModel();
         modeloHospedes.addColumn("Numero de Hóspede");
         modeloHospedes.addColumn("Nome");
@@ -112,7 +111,7 @@ public class Buscar extends JFrame {
         //modeloHospedes.addRow( new Object[]{"numero", "nome", "sobrenome", "data", "nacionalidade", "tel", "numero res"});
 
         JLabel lblNewLabel_2 = new JLabel("");
-        lblNewLabel_2.setIcon(new ImageIcon(Buscar.class.getResource("/imagens/Ha-100px.png")));
+        lblNewLabel_2.setIcon(new ImageIcon(Buscar.class.getResource("/images/Ha-100px.png")));
         lblNewLabel_2.setBounds(56, 51, 104, 107);
         contentPane.add(lblNewLabel_2);
 
