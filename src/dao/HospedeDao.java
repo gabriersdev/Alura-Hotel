@@ -56,6 +56,41 @@ public class HospedeDao {
         return hospedeCriado;
     }
 
+    public List<Hospede> listarHospedes() throws SQLException {
+
+        List<Hospede> hospedes = new ArrayList<>();
+        String sql = "SELECT id_hospede, nome_hospede, sobrenome_hospede, data_nascimento_hospede, nacionalidade_hospede, telefone_hospede, cod_reserva_hospede FROM hospedes";
+
+        try (PreparedStatement pstm = this.connection.prepareStatement(sql)) {
+
+            pstm.execute();
+
+            ResultSet resultSet = pstm.getResultSet();
+
+            while (resultSet.next()) {
+                hospedes.add(
+                        new Hospede(
+                                resultSet.getInt("id_hospede"),
+                                resultSet.getString("nome_hospede"),
+                                resultSet.getString("sobrenome_hospede"),
+                                resultSet.getDate("data_nascimento_hospede"),
+                                resultSet.getString("nacionalidade_hospede"),
+                                resultSet.getString("telefone_hospede"),
+                                resultSet.getInt("cod_reserva_hospede")
+                        )
+                );
+
+                this.connection.commit();
+            }
+
+        } catch (SQLException e) {
+            this.connection.rollback();
+            System.out.println(e);
+        }
+
+        return hospedes;
+    }
+
     public Hospede listarHospede(Integer id) throws SQLException {
 
         Hospede hospedeCriado = new Hospede();
@@ -130,10 +165,10 @@ public class HospedeDao {
         //Hospede hospede1 = hospedeDao.salvar(hospede);
         //System.out.println(hospede1.getId());
 
-        Hospede hospede2 = hospedeDao.listarHospede(1);
-        hospede2.setNome("Carlos Eduardo");
-
-        System.out.println(hospedeDao.alterar(hospede2));
+        List<Hospede> hospedes = hospedeDao.listarHospedes();
+        hospedes.forEach(hospedeList -> {
+            System.out.println(hospedeList.getNome());
+        });
 
     }
 }

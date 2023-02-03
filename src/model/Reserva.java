@@ -12,6 +12,10 @@ public class Reserva {
     //private Sting valor;
     private String formaPagamento;
 
+    public Reserva(){
+
+    }
+
     public Reserva(Date dataEntrada, Date dataSaida, String valor, String formaPagamento) {
         this.dataEntrada = dataEntrada;
         this.dataSaida = dataSaida;

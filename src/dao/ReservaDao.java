@@ -17,7 +17,9 @@ public class ReservaDao {
         this.connection = connection;
     }
 
-    public void salvar(Reserva reserva) {
+    public Reserva salvar(Reserva reserva) {
+
+        Reserva reservaCriada = new Reserva();
         String sql = "INSERT INTO reservas (data_entrada_reserva, data_saida_reserva, valor_saida_reserva, forma_pagamento_reserva) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement pstm = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -34,6 +36,8 @@ public class ReservaDao {
                 while (resultSet.next()) {
                     //Retornando o id para a referência Reserva
                     reserva.setId(resultSet.getInt(1));
+
+                    reservaCriada = this.listarReserva(resultSet.getInt(1));
                 }
 
             } catch (Exception e) {
@@ -43,6 +47,8 @@ public class ReservaDao {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
+        return reservaCriada;
     }
 
     public Double valorReserva(Long periodo) {
@@ -79,9 +85,9 @@ public class ReservaDao {
         return reservas;
     }
 
-    public List<Reserva> listarReserva(Integer id) {
+    public Reserva listarReserva(Integer id) {
 
-        List reservas = new ArrayList<>();
+        Reserva reserva = new Reserva();
 
         try (PreparedStatement statement = this.connection.prepareStatement("SELECT id_reserva, data_entrada_reserva, data_saida_reserva, valor_saida_reserva, forma_pagamento_reserva FROM reservas WHERE id_reserva = ?")) {
 
@@ -91,21 +97,21 @@ public class ReservaDao {
             ResultSet resultSet = statement.getResultSet();
 
             while (resultSet.next()) {
-                reservas.add(
-                        new Reserva(
-                                resultSet.getInt("id_reserva"),
-                                resultSet.getDate("data_entrada_reserva"),
-                                resultSet.getDate("data_saida_reserva"),
-                                resultSet.getString("valor_saida_reserva"),
-                                resultSet.getString("forma_pagamento_reserva")
-                        ));
+                reserva = new Reserva(
+                        resultSet.getInt("id_reserva"),
+                        resultSet.getDate("data_entrada_reserva"),
+                        resultSet.getDate("data_saida_reserva"),
+                        resultSet.getString("valor_saida_reserva"),
+                        resultSet.getString("forma_pagamento_reserva")
+                );
+
             }
 
         } catch (SQLException e) {
             System.out.println(e);
         }
 
-        return reservas;
+        return reserva;
     }
 
     public Boolean alterarReserva(Reserva reserva) {
