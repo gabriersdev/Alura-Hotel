@@ -19,6 +19,7 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.Vector;
 
 @SuppressWarnings("serial")
 public class Buscar extends JFrame {
@@ -94,7 +95,6 @@ public class Buscar extends JFrame {
         modelo.addColumn("Valor");
         modelo.addColumn("Forma de PGTO.");
 
-
         tbHospedes = new JTable();
         tbHospedes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tbHospedes.setFont(new Font("Roboto", Font.PLAIN, 16));
@@ -107,6 +107,9 @@ public class Buscar extends JFrame {
         modeloHospedes.addColumn("Nacionalidade");
         modeloHospedes.addColumn("Telefone");
         modeloHospedes.addColumn("Numero de Reserva");
+
+        //Testando implementação
+        //modeloHospedes.addRow( new Object[]{"numero", "nome", "sobrenome", "data", "nacionalidade", "tel", "numero res"});
 
         JLabel lblNewLabel_2 = new JLabel("");
         lblNewLabel_2.setIcon(new ImageIcon(Buscar.class.getResource("/imagens/Ha-100px.png")));
