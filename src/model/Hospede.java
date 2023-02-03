@@ -11,6 +11,10 @@ public class Hospede {
     private String telefone;
     private Integer cod_reserva;
 
+    public Hospede(){
+
+    }
+
     public Hospede(String nome, String sobrenome, Date data_nascimento, String nacionalidade, String telefone, Integer cod_reserva) {
         this.nome = nome;
         this.sobrenome = sobrenome;

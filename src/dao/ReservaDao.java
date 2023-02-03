@@ -79,13 +79,13 @@ public class ReservaDao {
         return reservas;
     }
 
-    public List<Reserva> listarReserva(Reserva reserva) {
+    public List<Reserva> listarReserva(Integer id) {
 
         List reservas = new ArrayList<>();
 
         try (PreparedStatement statement = this.connection.prepareStatement("SELECT id_reserva, data_entrada_reserva, data_saida_reserva, valor_saida_reserva, forma_pagamento_reserva FROM reservas WHERE id_reserva = ?")) {
 
-            statement.setInt(1, reserva.getId());
+            statement.setInt(1, id);
 
             statement.execute();
             ResultSet resultSet = statement.getResultSet();
