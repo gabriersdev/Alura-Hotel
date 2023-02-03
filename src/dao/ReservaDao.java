@@ -161,8 +161,14 @@ public class ReservaDao {
         ReservaDao reservaDao = new ReservaDao(new ConnectionFactory().conexao());
         List<Reserva> reservas = reservaDao.listarReservas();
 
+        /*
         reservas.forEach(reserva -> {
             System.out.println(reserva.getId());
+            if(reserva.getId() == 2){
+                reserva.setFormaPagamento("Dinheiro");
+                reservaDao.alterarReserva(reserva);
+            }
         });
+         */
     }
 }

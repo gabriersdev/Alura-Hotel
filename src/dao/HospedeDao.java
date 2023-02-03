@@ -14,9 +14,9 @@ public class HospedeDao {
     public HospedeDao(Connection connection) {
         this.connection = connection;
 
-        try{
+        try {
             this.connection.setAutoCommit(false);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
         }
     }
@@ -56,19 +56,19 @@ public class HospedeDao {
         return hospedeCriado;
     }
 
-    public Hospede listarHospede(Integer id){
+    public Hospede listarHospede(Integer id) throws SQLException {
 
         Hospede hospedeCriado = new Hospede();
         String sql = "SELECT id_hospede, nome_hospede, sobrenome_hospede, data_nascimento_hospede, nacionalidade_hospede, telefone_hospede, cod_reserva_hospede FROM hospedes WHERE id_hospede = ?";
 
-        try (PreparedStatement pstm = this.connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = this.connection.prepareStatement(sql)) {
 
             pstm.setInt(1, id);
             pstm.execute();
 
             ResultSet resultSet = pstm.getResultSet();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 hospedeCriado = new Hospede(
                         resultSet.getInt("id_hospede"),
                         resultSet.getString("nome_hospede"),
@@ -82,19 +82,20 @@ public class HospedeDao {
                 this.connection.commit();
             }
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
+            this.connection.rollback();
             System.out.println(e);
         }
 
         return hospedeCriado;
     }
 
-    public Boolean alterar(Hospede hospede) {
+    public Boolean alterar(Hospede hospede) throws SQLException {
 
         Boolean status = false;
-        String sql = "INSERT INTO hospedes (nome_hospede, sobrenome_hospede, data_nascimento_hospede, nacionalidade_hospede, telefone_hospede, cod_reserva_hospede) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "UPDATE hospedes SET nome_hospede = ?, sobrenome_hospede = ?, data_nascimento_hospede = ?, nacionalidade_hospede = ?, telefone_hospede = ?, cod_reserva_hospede = ? WHERE id_hospede = ?";
 
-        try (PreparedStatement pstm = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement pstm = this.connection.prepareStatement(sql)) {
 
             pstm.setString(1, hospede.getNome());
             pstm.setString(2, hospede.getSobrenome());
@@ -102,21 +103,19 @@ public class HospedeDao {
             pstm.setString(4, hospede.getNacionalidade());
             pstm.setString(5, hospede.getTelefone());
             pstm.setInt(6, hospede.getCod_reserva());
+            pstm.setInt(7, hospede.getId());
 
             pstm.executeUpdate();
 
-            try (ResultSet resultSet = pstm.getGeneratedKeys()) {
-
-                while (resultSet.next()) {
-                    System.out.println("O id criado foi o " + resultSet.getInt(1));
-                    status = true;
-                }
-
-            } catch (SQLException e) {
-                System.out.println(e);
+            Integer linhasAlteradas = pstm.getUpdateCount();
+            System.out.println(linhasAlteradas);
+            if (linhasAlteradas > 0) {
+                status = true;
+                this.connection.commit();
             }
 
         } catch (SQLException e) {
+            this.connection.rollback();
             System.out.println(e);
         }
 
@@ -124,13 +123,17 @@ public class HospedeDao {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         HospedeDao hospedeDao = new HospedeDao(new ConnectionFactory().conexao());
 
-        Hospede hospede = new Hospede("Gabriel", "Ribeiro", Date.valueOf("2004-01-01"), "Brasileiro", "31123456789", 1);
-        Hospede hospede1 = hospedeDao.salvar(hospede);
+        //Hospede hospede = new Hospede("Gabriel", "Ribeiro", Date.valueOf("2004-01-01"), "Brasileiro", "31123456789", 1);
+        //Hospede hospede1 = hospedeDao.salvar(hospede);
+        //System.out.println(hospede1.getId());
 
-        System.out.println(hospede1.getId());
+        Hospede hospede2 = hospedeDao.listarHospede(1);
+        hospede2.setNome("Carlos Eduardo");
+
+        System.out.println(hospedeDao.alterar(hospede2));
 
     }
 }
