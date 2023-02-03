@@ -376,7 +376,8 @@ public class ReservasView extends JFrame {
         Reserva reserva = new Reserva(dataEntrada, dataSaida, this.txtValor.getText(), this.txtFormaPagamento.getSelectedItem().toString());
         this.reservaController.salvar(reserva);
 
-        JOptionPane.showMessageDialog(contentPane, "Reserva registrada!", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
+        Sucesso.main(null);
+        //JOptionPane.showMessageDialog(contentPane, "Reserva registrada!", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
     }
 
     //Código que permite movimentar a janela pela tela seguindo a posição de "x" e "y"

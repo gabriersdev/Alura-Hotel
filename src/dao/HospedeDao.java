@@ -157,23 +157,22 @@ public class HospedeDao {
         return status;
     }
 
-    public Boolean deletarHospede(Hospede hospede) throws SQLException{
-
+    public Boolean deletarHospede(Hospede hospede) throws SQLException {
         Boolean status = false;
         String sql = "DELETE FROM hospedes WHERE id_hospede = ?";
 
-        try(PreparedStatement pstm = this.connection.prepareStatement(sql)) {
+        try (PreparedStatement pstm = this.connection.prepareStatement(sql)) {
             pstm.setInt(1, hospede.getId());
             pstm.execute();
 
             Integer linhasAlteradas = pstm.getUpdateCount();
             System.out.println(linhasAlteradas);
-            if(linhasAlteradas > 0){
+            if (linhasAlteradas > 0) {
                 status = true;
                 this.connection.commit();
             }
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             this.connection.rollback();
             System.out.println(e);
         }
