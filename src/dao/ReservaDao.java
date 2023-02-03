@@ -146,7 +146,7 @@ public class ReservaDao {
             pstm.executeUpdate();
 
             Integer linhasAlteradas = pstm.getUpdateCount();
-            if(linhasAlteradas > 0){
+            if (linhasAlteradas > 0) {
                 status = true;
             }
 
