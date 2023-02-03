@@ -79,13 +79,13 @@ public class ReservaDao {
         return reservas;
     }
 
-    public List<Reserva> listarReserva(Integer id) {
+    public List<Reserva> listarReserva(Reserva reserva) {
 
         List reservas = new ArrayList<>();
 
         try (PreparedStatement statement = this.connection.prepareStatement("SELECT id_reserva, data_entrada_reserva, data_saida_reserva, valor_saida_reserva, forma_pagamento_reserva FROM reservas WHERE id_reserva = ?")) {
 
-            statement.setInt(1, id);
+            statement.setInt(1, reserva.getId());
 
             statement.execute();
             ResultSet resultSet = statement.getResultSet();
@@ -108,11 +108,12 @@ public class ReservaDao {
         return reservas;
     }
 
-    public void alterarReserva(Reserva reserva) {
+    public Boolean alterarReserva(Reserva reserva) {
 
+        Boolean status = false;
         String sql = "UPDATE reservas SET data_entrada_reserva = ?, data_saida_reserva = ?, valor_saida_reserva = ?, forma_pagamento_reserva = ? WHERE id_reserva = ?";
 
-        try (PreparedStatement pstm = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement pstm = this.connection.prepareStatement(sql)) {
 
             pstm.setDate(1, reserva.getDataEntrada());
             pstm.setDate(2, reserva.getDataSaida());
@@ -122,21 +123,38 @@ public class ReservaDao {
 
             pstm.executeUpdate();
 
-            try (ResultSet resultSet = pstm.getGeneratedKeys()) {
-
-                while (resultSet.next()) {
-                    //Retornando o id para a referência Reserva
-                    reserva.setId(resultSet.getInt(1));
-                }
-
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
+            Integer linhasAlteradas = pstm.getUpdateCount();
+            if (linhasAlteradas > 0) {
+                status = true;
             }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
+        return status;
+    }
+
+    public Boolean deletaReserva(Reserva reserva) {
+
+        Boolean status = false;
+        String sql = "DELETE FROM reservas WHERE id_reserva = ?";
+
+        try (PreparedStatement pstm = this.connection.prepareStatement(sql)) {
+
+            pstm.setInt(1, reserva.getId());
+            pstm.executeUpdate();
+
+            Integer linhasAlteradas = pstm.getUpdateCount();
+            if(linhasAlteradas > 0){
+                status = true;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return status;
     }
 
     public static void main(String[] args) {
