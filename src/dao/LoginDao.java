@@ -19,35 +19,35 @@ public class LoginDao {
         this.connection.setAutoCommit(false);
     }
 
-    public Boolean acessar(Login login){
+    public Boolean acessar(Login login) {
         Boolean status = false;
 
         String sql = "SELECT id_usuario FROM usuarios WHERE nome_usuario = ? AND senha_usuario = ?";
 
-        try(PreparedStatement pstm = this.connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = this.connection.prepareStatement(sql)) {
             pstm.setString(1, login.getNome());
             pstm.setString(2, login.getSenha());
 
             pstm.execute();
 
-            try(ResultSet resultSet = pstm.getResultSet()){
-                while (resultSet.next()){
-                    if(resultSet.getInt("id_usuario") != 0){
+            try (ResultSet resultSet = pstm.getResultSet()) {
+                while (resultSet.next()) {
+                    if (resultSet.getInt("id_usuario") != 0) {
                         status = true;
                     }
                 }
-            }catch (SQLException e){
+            } catch (SQLException e) {
                 System.out.println(e);
             }
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
         }
 
         return status;
     }
 
-    public static void main(String[] args) throws SQLException{
+    public static void main(String[] args) throws SQLException {
         LoginDao loginDao = new LoginDao(new ConnectionFactory().conexao());
         Boolean sucesso = loginDao.acessar(new Login("admin", "admin"));
         System.out.println(sucesso);

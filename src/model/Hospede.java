@@ -11,7 +11,7 @@ public class Hospede {
     private String telefone;
     private Integer cod_reserva;
 
-    public Hospede(){
+    public Hospede() {
 
     }
 

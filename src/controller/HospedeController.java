@@ -12,24 +12,24 @@ public class HospedeController {
 
     private HospedeDao hospedeDao;
 
-    public HospedeController(){
+    public HospedeController() {
         Connection connection = new ConnectionFactory().conexao();
         this.hospedeDao = new HospedeDao(connection);
     }
 
-    public Boolean salvar(Hospede hospede){
+    public Boolean salvar(Hospede hospede) {
         return this.hospedeDao.salvar(hospede);
     }
 
-    public List<Hospede> listar() throws SQLException{
+    public List<Hospede> listar() throws SQLException {
         return this.hospedeDao.listar();
     }
 
-    public Boolean alterar(Hospede hospede) throws SQLException{
+    public Boolean alterar(Hospede hospede) throws SQLException {
         return this.alterar(hospede);
     }
 
-    public Boolean deletar(Hospede hospede) throws SQLException{
+    public Boolean deletar(Hospede hospede) throws SQLException {
         return this.deletar(hospede);
     }
 

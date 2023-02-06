@@ -14,7 +14,7 @@ public class LoginController {
         this.loginDao = new LoginDao(new ConnectionFactory().conexao());
     }
 
-    public Boolean acessar(Login login){
+    public Boolean acessar(Login login) {
         return this.loginDao.acessar(login);
     }
 

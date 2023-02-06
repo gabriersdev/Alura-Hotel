@@ -12,7 +12,7 @@ public class Reserva {
     //private Sting valor;
     private String formaPagamento;
 
-    public Reserva(){
+    public Reserva() {
 
     }
 

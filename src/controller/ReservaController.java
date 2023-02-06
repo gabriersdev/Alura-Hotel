@@ -16,12 +16,12 @@ public class ReservaController {
         this.reservaDao = new ReservaDao(connection);
     }
 
-    public Integer salvar(Reserva reserva){
+    public Integer salvar(Reserva reserva) {
         return this.reservaDao.salvar(reserva);
     }
 
-    public Double valorReserva(Long periodo){
-        return this.reservaDao.valorReserva( periodo);
+    public Double valorReserva(Long periodo) {
+        return this.reservaDao.valorReserva(periodo);
     }
 
     public Long calcularPeriodo(LocalDate entrada, LocalDate saida) {
