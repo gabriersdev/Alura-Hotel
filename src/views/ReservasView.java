@@ -339,7 +339,7 @@ public class ReservasView extends JFrame {
                     //registro.setVisible(true);
                     //registraReserva();
                 } else {
-                    JOptionPane.showMessageDialog(null, "Deve preencher todos os campos.");
+                    JOptionPane.showMessageDialog(null, "Você deve preencher todos os campos.");
                 }
             }
         });
@@ -358,7 +358,9 @@ public class ReservasView extends JFrame {
     }
 
     //Faz o registro de fato, de acordo com os dados retornados do formulário
-    public void registraReserva() {
+    public Boolean registraReserva() {
+
+        Boolean status = false;
         String dataEntradaTxt = Converte.converterJTextFieldParaString(txtDataE);
         String dataSaidaTxt = Converte.converterJTextFieldParaString(txtDataS);
 
@@ -371,9 +373,17 @@ public class ReservasView extends JFrame {
         if (idCriado != null) {
             Sucesso.main(null);
             JOptionPane.showMessageDialog(contentPane, "O Número da reserva foi: " + idCriado, "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
+            status = true;
+
+            ReservasView.this.dispose();
+            RegistroHospede.main(null);
+
         } else {
             JOptionPane.showMessageDialog(contentPane, "Ocorreu um erro no registro da reserva. Verifique se os campos foram preenchidos completamente", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
+            status = false;
         }
+
+        return status;
     }
 
     //Código que permite movimentar a janela pela tela seguindo a posição de "x" e "y"

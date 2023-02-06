@@ -1,6 +1,7 @@
 package views;
 
 import controller.LoginController;
+import views.utilitarios.Utilitarios;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -247,15 +248,18 @@ public class Login extends JFrame {
 
 	//Verifica se o nome de usuário e senhas existem na tabela de Usuários
 	private void Login() {
-	        String senhaa = new String (txtSenha.getPassword());
 
-	        if(this.loginController.acessar(new model.Login(this.txtUsuario.getText(), this.txtSenha.getText()))){
-	            MenuUsuario menu = new MenuUsuario();
-	            menu.setVisible(true);
-	            dispose();	 
-	        }else {
-	            JOptionPane.showMessageDialog(this, "Usuario ou Senha não válidos");
-	        }
+		if(!Utilitarios.isEmpty(this.txtUsuario.getText()) && !Utilitarios.isEmpty(this.txtSenha.getText())){
+			if(this.loginController.acessar(new model.Login(this.txtUsuario.getText(), this.txtSenha.getText()))){
+				MenuUsuario menu = new MenuUsuario();
+				menu.setVisible(true);
+				dispose();
+			}else {
+				JOptionPane.showMessageDialog(this, "Usuario ou Senha não válidos");
+			}
+		}else{
+			JOptionPane.showMessageDialog(null, "Você deve preencher todos os campos.");
+		}
 	} 
 	
 	//Código que permite movimentar a janela pela tela seguindo a posição de "x" e "y"
