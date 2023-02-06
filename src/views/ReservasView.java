@@ -366,10 +366,14 @@ public class ReservasView extends JFrame {
         Date dataSaida = Date.valueOf(dataSaidaTxt);
 
         Reserva reserva = new Reserva(dataEntrada, dataSaida, this.txtValor.getText(), this.txtFormaPagamento.getSelectedItem().toString());
-        this.reservaController.salvar(reserva);
+        Integer idCriado = this.reservaController.salvar(reserva);
 
-        Sucesso.main(null);
-        //JOptionPane.showMessageDialog(contentPane, "Reserva registrada!", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
+        if (idCriado != null) {
+            Sucesso.main(null);
+            JOptionPane.showMessageDialog(contentPane, "O Número da reserva foi: " + idCriado, "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(contentPane, "Ocorreu um erro no registro da reserva. Verifique se os campos foram preenchidos completamente", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     //Código que permite movimentar a janela pela tela seguindo a posição de "x" e "y"

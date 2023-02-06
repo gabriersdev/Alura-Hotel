@@ -76,6 +76,7 @@ public class HospedeDao {
 
                 while (resultSet.next()) {
                     status = true;
+                    this.connection.commit();
                 }
 
             } catch (SQLException e) {

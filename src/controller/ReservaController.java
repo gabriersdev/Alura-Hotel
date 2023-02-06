@@ -5,10 +5,7 @@ import factory.ConnectionFactory;
 import model.Reserva;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
 
 public class ReservaController {
 
@@ -19,8 +16,8 @@ public class ReservaController {
         this.reservaDao = new ReservaDao(connection);
     }
 
-    public void salvar(Reserva reserva){
-        this.reservaDao.salvar(reserva);
+    public Integer salvar(Reserva reserva){
+        return this.reservaDao.salvar(reserva);
     }
 
     public Double valorReserva(Long periodo){

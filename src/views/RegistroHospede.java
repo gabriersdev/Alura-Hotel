@@ -6,6 +6,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 
 import com.toedter.calendar.JDateChooser;
+import controller.HospedeController;
 import dao.HospedeDao;
 import factory.ConnectionFactory;
 import model.Hospede;
@@ -33,6 +34,7 @@ public class RegistroHospede extends JFrame {
     private JComboBox<Format> txtNacionalidade;
     private JLabel labelExit;
     private JLabel labelAtras;
+    private HospedeController hospedeController;
     int xMouse, yMouse;
 
     /**
@@ -55,6 +57,8 @@ public class RegistroHospede extends JFrame {
      * Create the frame.
      */
     public RegistroHospede() {
+
+        this.hospedeController = new HospedeController();
 
         setIconImage(Toolkit.getDefaultToolkit().getImage(RegistroHospede.class.getResource("/images/lOGO-50PX.png")));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -345,7 +349,7 @@ public class RegistroHospede extends JFrame {
         String nacionalidade = this.txtNacionalidade.getSelectedItem().toString();
 
         Hospede hospede = new Hospede(nome, sobrenome, dataNascimento, nacionalidade, telefone, Integer.parseInt(nReserva));
-        return new HospedeDao(new ConnectionFactory().conexao()).salvar(hospede);
+        return this.hospedeController.salvar(hospede);
     }
 
     //Código que permite movimentar a janela pela tela seguindo a posição de "x" y "y"
