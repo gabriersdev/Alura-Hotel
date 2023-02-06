@@ -1,28 +1,25 @@
 package views;
 
 import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
 import java.awt.Color;
 
 import com.toedter.calendar.JDateChooser;
+import dao.HospedeDao;
+import factory.ConnectionFactory;
+import model.Hospede;
+import views.utilitarios.Converte;
 import views.utilitarios.Utilitarios;
 
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.ImageIcon;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.sql.Date;
 import java.text.Format;
 import java.awt.Toolkit;
-import javax.swing.SwingConstants;
-import javax.swing.JSeparator;
 
 @SuppressWarnings("serial")
 public class RegistroHospede extends JFrame {
@@ -288,15 +285,6 @@ public class RegistroHospede extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-				/*
-				txtNome
-                txtSobrenome
-                txtTelefone
-                txtNreserva
-                txtDataN
-                txtNacionalidade
-                */
-
                 //Verifica se os campos foram preenchidos
                 if (
                         !Utilitarios.isEmpty(txtNome.getText()) &&
@@ -306,7 +294,12 @@ public class RegistroHospede extends JFrame {
                         txtDataN.getDate() != null  &&
                         !Utilitarios.isEmpty(txtNacionalidade.getSelectedItem().toString())
                 ){
-                    System.out.println("Tudo preenchido");
+                    Boolean sucesso = registrar();
+                    if(sucesso){
+                        Sucesso.main(null);
+                    }else{
+                        JOptionPane.showMessageDialog(contentPane, "Ocorreu um erro no registro do hóspede. Verifique se tudo foi preenchido corretamente.", "Aviso", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
 
             }
@@ -338,6 +331,21 @@ public class RegistroHospede extends JFrame {
         logo.setBounds(194, 39, 104, 107);
         panel.add(logo);
         logo.setIcon(new ImageIcon(RegistroHospede.class.getResource("/images/Ha-100px.png")));
+    }
+
+    private Boolean registrar(){
+        String nome = this.txtNome.getText();
+        String sobrenome = this.txtSobrenome.getText();
+        String telefone = this.txtTelefone.getText();
+        String nReserva = this.txtNreserva.getText().replaceAll("[^0-9]", "");
+
+        String dataNascimentroS = Converte.converterJTextFieldParaString(this.txtDataN);
+        Date dataNascimento = Date.valueOf(dataNascimentroS);
+
+        String nacionalidade = this.txtNacionalidade.getSelectedItem().toString();
+
+        Hospede hospede = new Hospede(nome, sobrenome, dataNascimento, nacionalidade, telefone, Integer.parseInt(nReserva));
+        return new HospedeDao(new ConnectionFactory().conexao()).salvar(hospede);
     }
 
     //Código que permite movimentar a janela pela tela seguindo a posição de "x" y "y"

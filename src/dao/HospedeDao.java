@@ -22,7 +22,7 @@ public class HospedeDao {
     }
 
     //Método cria um Hóspede no Banco de Dados e retorna uma referência para um Hóspede com ID e tudo.
-    public Hospede salvar(Hospede hospede) {
+    public Hospede salvarTeste(Hospede hospede) {
 
         Hospede hospedeCriado = new Hospede();
         String sql = "INSERT INTO hospedes (nome_hospede, sobrenome_hospede, data_nascimento_hospede, nacionalidade_hospede, telefone_hospede, cod_reserva_hospede) VALUES (?, ?, ?, ?, ?, ?)";
@@ -54,6 +54,39 @@ public class HospedeDao {
         }
 
         return hospedeCriado;
+    }
+
+    public Boolean salvar(Hospede hospede) {
+
+        Boolean status = false;
+        String sql = "INSERT INTO hospedes (nome_hospede, sobrenome_hospede, data_nascimento_hospede, nacionalidade_hospede, telefone_hospede, cod_reserva_hospede) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement pstm = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            pstm.setString(1, hospede.getNome());
+            pstm.setString(2, hospede.getSobrenome());
+            pstm.setDate(3, hospede.getData_nascimento());
+            pstm.setString(4, hospede.getNacionalidade());
+            pstm.setString(5, hospede.getTelefone());
+            pstm.setInt(6, hospede.getCod_reserva());
+
+            pstm.executeUpdate();
+
+            try (ResultSet resultSet = pstm.getGeneratedKeys()) {
+
+                while (resultSet.next()) {
+                    status = true;
+                }
+
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return status;
     }
 
     public List<Hospede> listar() throws SQLException {
