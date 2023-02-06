@@ -42,7 +42,7 @@ public class HospedeDao {
 
                 while (resultSet.next()) {
                     System.out.println("O id criado foi o " + resultSet.getInt(1));
-                    hospedeCriado = this.listarHospede(resultSet.getInt(1));
+                    hospedeCriado = this.listar(resultSet.getInt(1));
                 }
 
             } catch (SQLException e) {
@@ -56,7 +56,7 @@ public class HospedeDao {
         return hospedeCriado;
     }
 
-    public List<Hospede> listarHospedes() throws SQLException {
+    public List<Hospede> listar() throws SQLException {
 
         List<Hospede> hospedes = new ArrayList<>();
         String sql = "SELECT id_hospede, nome_hospede, sobrenome_hospede, data_nascimento_hospede, nacionalidade_hospede, telefone_hospede, cod_reserva_hospede FROM hospedes";
@@ -91,7 +91,7 @@ public class HospedeDao {
         return hospedes;
     }
 
-    public Hospede listarHospede(Integer id) throws SQLException {
+    public Hospede listar(Integer id) throws SQLException {
 
         Hospede hospedeCriado = new Hospede();
         String sql = "SELECT id_hospede, nome_hospede, sobrenome_hospede, data_nascimento_hospede, nacionalidade_hospede, telefone_hospede, cod_reserva_hospede FROM hospedes WHERE id_hospede = ?";
@@ -157,7 +157,7 @@ public class HospedeDao {
         return status;
     }
 
-    public Boolean deletarHospede(Hospede hospede) throws SQLException {
+    public Boolean deletar(Hospede hospede) throws SQLException {
         Boolean status = false;
         String sql = "DELETE FROM hospedes WHERE id_hospede = ?";
 
@@ -187,7 +187,7 @@ public class HospedeDao {
         //Hospede hospede1 = hospedeDao.salvar(hospede);
         //System.out.println(hospede1.getId());
 
-        List<Hospede> hospedes = hospedeDao.listarHospedes();
+        List<Hospede> hospedes = hospedeDao.listar();
         hospedes.forEach(hospedeList -> {
             System.out.println(hospedeList.getNome());
         });
