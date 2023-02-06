@@ -132,6 +132,7 @@ public class ReservaDao {
             Integer linhasAlteradas = pstm.getUpdateCount();
             if (linhasAlteradas > 0) {
                 status = true;
+                this.connection.commit();
             }
 
         } catch (SQLException e) {
@@ -154,6 +155,7 @@ public class ReservaDao {
             Integer linhasAlteradas = pstm.getUpdateCount();
             if (linhasAlteradas > 0) {
                 status = true;
+                this.connection.commit();
             }
 
         } catch (SQLException e) {

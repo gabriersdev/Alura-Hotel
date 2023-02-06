@@ -280,6 +280,9 @@ public class RegistroHospede extends JFrame {
 		btnsalvar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+
+				//Verifica se os campos foram preenchidos
+
 			}
 		});
 		btnsalvar.setLayout(null);
