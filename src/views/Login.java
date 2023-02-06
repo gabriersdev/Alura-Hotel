@@ -1,5 +1,7 @@
 package views;
 
+import controller.LoginController;
+
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,6 +19,7 @@ import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.sql.SQLException;
 
 public class Login extends JFrame {
 
@@ -29,6 +32,7 @@ public class Login extends JFrame {
 	private JPasswordField txtSenha;
 	int xMouse, yMouse;
 	private JLabel labelExit;
+	private LoginController loginController;
 
 	/**
 	 * Launch the application.
@@ -50,6 +54,13 @@ public class Login extends JFrame {
 	 * Create the frame.
 	 */
 	public Login() {
+
+		try{
+			this.loginController = new LoginController();
+		}catch (SQLException e){
+			System.out.println(e);
+		}
+
 		setResizable(false);
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -233,14 +244,12 @@ public class Login extends JFrame {
 		panel.add(header);
 		header.setLayout(null);
 	}
-	
+
+	//Verifica se o nome de usuário e senhas existem na tabela de Usuários
 	private void Login() {
-		 String Usuario= "admin";
-	     String Senha="admin";
+	        String senhaa = new String (txtSenha.getPassword());
 
-	        String senhaa=new String (txtSenha.getPassword());
-
-	        if(txtUsuario.getText().equals(Usuario) && senhaa.equals(Senha)){
+	        if(this.loginController.acessar(new model.Login(this.txtUsuario.getText(), this.txtSenha.getText()))){
 	            MenuUsuario menu = new MenuUsuario();
 	            menu.setVisible(true);
 	            dispose();	 
