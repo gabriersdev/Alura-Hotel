@@ -37,7 +37,7 @@ public class ReservaDao {
                     //Retornando o id para a referência Reserva
                     reserva.setId(resultSet.getInt(1));
 
-                    reservaCriada = this.listarReserva(resultSet.getInt(1));
+                    reservaCriada = this.listar(resultSet.getInt(1));
                 }
 
             } catch (Exception e) {
@@ -59,7 +59,7 @@ public class ReservaDao {
         return ChronoUnit.DAYS.between(entrada, saida) + 1;
     }
 
-    public List<Reserva> listarReservas() {
+    public List<Reserva> listar() {
 
         List<Reserva> reservas = new ArrayList<>();
 
@@ -85,7 +85,7 @@ public class ReservaDao {
         return reservas;
     }
 
-    public Reserva listarReserva(Integer id) {
+    public Reserva listar(Integer id) {
 
         Reserva reserva = new Reserva();
 
@@ -114,7 +114,7 @@ public class ReservaDao {
         return reserva;
     }
 
-    public Boolean alterarReserva(Reserva reserva) {
+    public Boolean alterar(Reserva reserva) {
 
         Boolean status = false;
         String sql = "UPDATE reservas SET data_entrada_reserva = ?, data_saida_reserva = ?, valor_saida_reserva = ?, forma_pagamento_reserva = ? WHERE id_reserva = ?";
@@ -142,7 +142,7 @@ public class ReservaDao {
         return status;
     }
 
-    public Boolean deletaReserva(Reserva reserva) {
+    public Boolean deletar(Reserva reserva) {
 
         Boolean status = false;
         String sql = "DELETE FROM reservas WHERE id_reserva = ?";
@@ -167,7 +167,7 @@ public class ReservaDao {
 
     public static void main(String[] args) {
         ReservaDao reservaDao = new ReservaDao(new ConnectionFactory().conexao());
-        List<Reserva> reservas = reservaDao.listarReservas();
+        List<Reserva> reservas = reservaDao.listar();
 
         /*
         reservas.forEach(reserva -> {
