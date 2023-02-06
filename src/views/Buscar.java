@@ -107,9 +107,6 @@ public class Buscar extends JFrame {
         modeloHospedes.addColumn("Telefone");
         modeloHospedes.addColumn("Numero de Reserva");
 
-        //Testando implementação
-        //modeloHospedes.addRow( new Object[]{"numero", "nome", "sobrenome", "data", "nacionalidade", "tel", "numero res"});
-
         JLabel lblNewLabel_2 = new JLabel("");
         lblNewLabel_2.setIcon(new ImageIcon(Buscar.class.getResource("/images/Ha-100px.png")));
         lblNewLabel_2.setBounds(56, 51, 104, 107);
@@ -186,6 +183,7 @@ public class Buscar extends JFrame {
                 labelExit.setForeground(Color.black);
             }
         });
+
         btnexit.setLayout(null);
         btnexit.setBackground(Color.WHITE);
         btnexit.setBounds(857, 0, 53, 36);
@@ -208,9 +206,10 @@ public class Buscar extends JFrame {
         btnbuscar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
+                //Busca
             }
         });
+
         btnbuscar.setLayout(null);
         btnbuscar.setBackground(new Color(12, 138, 199));
         btnbuscar.setBounds(748, 125, 122, 35);
