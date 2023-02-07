@@ -58,7 +58,7 @@ public class Login extends JFrame {
 
 		try{
 			this.loginController = new LoginController();
-		}catch (SQLException e){
+		}catch (Exception e){
 			System.out.println(e);
 		}
 

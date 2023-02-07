@@ -21,16 +21,28 @@ public class HospedeController {
         return this.hospedeDao.salvar(hospede);
     }
 
-    public List<Hospede> listar() throws SQLException {
-        return this.hospedeDao.listar();
+    public List<Hospede> listar() {
+        try{
+            return this.hospedeDao.listar();
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
     }
 
-    public Boolean alterar(Hospede hospede) throws SQLException {
-        return this.alterar(hospede);
+    public Boolean alterar(Hospede hospede) {
+        try{
+            return this.alterar(hospede);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
-    public Boolean deletar(Hospede hospede) throws SQLException {
-        return this.deletar(hospede);
+    public Boolean deletar(Hospede hospede){
+        try{
+            return this.deletar(hospede);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
 }

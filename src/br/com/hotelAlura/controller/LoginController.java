@@ -10,8 +10,12 @@ public class LoginController {
 
     private LoginDao loginDao;
 
-    public LoginController() throws SQLException {
-        this.loginDao = new LoginDao(new ConnectionFactory().conexao());
+    public LoginController() {
+        try{
+            this.loginDao = new LoginDao(new ConnectionFactory().conexao());
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
     }
 
     public Boolean acessar(Login login) {
