@@ -177,7 +177,6 @@ public class HospedeDao {
             pstm.executeUpdate();
 
             Integer linhasAlteradas = pstm.getUpdateCount();
-            System.out.println(linhasAlteradas);
             if (linhasAlteradas > 0) {
                 status = true;
                 this.connection.commit();

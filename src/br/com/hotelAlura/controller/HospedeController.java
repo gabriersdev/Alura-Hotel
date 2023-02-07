@@ -31,7 +31,7 @@ public class HospedeController {
 
     public Boolean alterar(Hospede hospede) {
         try{
-            return this.alterar(hospede);
+            return this.hospedeDao.alterar(hospede);
         }catch (Exception e){
             throw new RuntimeException(e);
         }
