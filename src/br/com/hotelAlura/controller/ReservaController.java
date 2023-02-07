@@ -5,7 +5,9 @@ import br.com.hotelAlura.factory.ConnectionFactory;
 import br.com.hotelAlura.model.Reserva;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 
 public class ReservaController {
 
@@ -26,6 +28,14 @@ public class ReservaController {
 
     public Long calcularPeriodo(LocalDate entrada, LocalDate saida) {
         return this.reservaDao.calcularPeriodo(entrada, saida);
+    }
+
+    public List<Reserva> listar(){
+        try {
+            return this.reservaDao.listar();
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     //public void listar()

@@ -269,6 +269,15 @@ public class Buscar extends JFrame {
         modelo.addRow(new Object[]{"N.º de Reserva", "Data Check In", "Data Check Out", "Valor", "Forma de PGTO."});
         modeloHospedes.addRow(new Object[]{"N.º de Hóspede", "Nome", "Sobrenome", "Data de Nascimento", "Nacionalidade", "Telefone", "N.º de Reserva"});
 
+        //Listando as reservas
+        this.reservaController.listar().stream().forEach(reserva -> {
+            modelo.addRow(new Object[]{reserva.getId(), reserva.getDataEntrada(), reserva.getDataSaida(), reserva.getValor(), reserva.getFormaPagamento()});
+        });
+
+        //Listando os hóspedes
+        this.hospedeController.listar().stream().forEach(hospede -> {
+            modeloHospedes.addRow(new Object[]{hospede.getId(), hospede.getNome(), hospede.getSobrenome(), hospede.getData_nascimento(), hospede.getNacionalidade(), hospede.getTelefone(), hospede.getCod_reserva()});
+        });
     }
 
     //Código que permite movimentar a janela pela tela seguindo a posição de "x" e "y"
