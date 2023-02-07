@@ -299,6 +299,7 @@ public class RegistroHospede extends JFrame {
                     Boolean sucesso = registrar();
                     if(sucesso){
                         Sucesso.main(null);
+                        RegistroHospede.this.dispose(); //Fechando
                     }else{
                         JOptionPane.showMessageDialog(contentPane, "Ocorreu um erro no registro do hóspede. Verifique se tudo foi preenchido corretamente.", "Aviso", JOptionPane.ERROR_MESSAGE);
                     }
