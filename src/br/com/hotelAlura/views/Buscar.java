@@ -6,25 +6,14 @@ import br.com.hotelAlura.model.Hospede;
 import br.com.hotelAlura.model.Reserva;
 
 import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ImageIcon;
 import java.awt.Color;
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.JTabbedPane;
 import java.awt.Toolkit;
-import javax.swing.SwingConstants;
-import javax.swing.JSeparator;
-import javax.swing.ListSelectionModel;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.util.List;
+import java.awt.event.*;
+import java.sql.Date;
 
 @SuppressWarnings("serial")
 public class Buscar extends JFrame {
@@ -264,27 +253,74 @@ public class Buscar extends JFrame {
         btnDeletar.add(lblExcluir);
         setResizable(false);
 
-        //Label das colunas
-        modelo.addRow(new Object[]{"N.º de Reserva", "Data Check In", "Data Check Out", "Valor", "Forma de PGTO."});
-        modeloHospedes.addRow(new Object[]{"N.º de Hóspede", "Nome", "Sobrenome", "Data de Nascimento", "Nacionalidade", "Telefone", "N.º de Reserva"});
+        //Ação ao clicar em Editar
+        btnEditar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("Clicou em EDITAR");
+                alterar();
+                limparTabela();
+                preencherTabelas();
+            }
+        });
+
+        //Ação ao clicar em Deletar
+        btnDeletar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("Clicou em DELETAR");
+                deletar();
+                limparTabela();
+                preencherTabelas();
+            }
+        });
 
         //Adicionando registros as tabelas de Reservas e de Hóspedes
-        this.listarReservas(modelo);
-        this.listarHospede(modeloHospedes);
+        preencherTabelas();
+    }
+
+    private void preencherTabelas(){
+        listarReservas(modelo);
+        listarHospede(modeloHospedes);
+    }
+
+    private void limparTabela() {
+        modelo.getDataVector().clear();
+        modeloHospedes.getDataVector().clear();
+    }
+
+    private void alterar() {
+
+    }
+
+    private void deletar(){
+
     }
 
     private void listarReservas(DefaultTableModel modelo){
+        modelo.addRow(new Object[]{"N.º de Reserva", "Data Check In", "Data Check Out", "Valor", "Forma de PGTO."});
+
         //Listando as reservas
-        this.reservaController.listar().stream().forEach(reserva -> {
-            modelo.addRow(new Object[]{reserva.getId(), reserva.getDataEntrada(), reserva.getDataSaida(), reserva.getValor(), reserva.getFormaPagamento()});
-        });
+        try{
+            this.reservaController.listar().stream().forEach(reserva -> {
+                modelo.addRow(new Object[]{reserva.getId(), reserva.getDataEntrada(), reserva.getDataSaida(), reserva.getValor(), reserva.getFormaPagamento()});
+            });
+        }catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     public void listarHospede(DefaultTableModel modeloHospedes){
+        modeloHospedes.addRow(new Object[]{"N.º de Hóspede", "Nome", "Sobrenome", "Data de Nascimento", "Nacionalidade", "Telefone", "N.º de Reserva"});
+
         //Listando os hóspedes
-        this.hospedeController.listar().stream().forEach(hospede -> {
-            modeloHospedes.addRow(new Object[]{hospede.getId(), hospede.getNome(), hospede.getSobrenome(), hospede.getData_nascimento(), hospede.getNacionalidade(), hospede.getTelefone(), hospede.getCod_reserva()});
-        });
+        try {
+            this.hospedeController.listar().stream().forEach(hospede -> {
+                modeloHospedes.addRow(new Object[]{hospede.getId(), hospede.getNome(), hospede.getSobrenome(), hospede.getData_nascimento(), hospede.getNacionalidade(), hospede.getTelefone(), hospede.getCod_reserva()});
+            });
+        }catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     //Código que permite movimentar a janela pela tela seguindo a posição de "x" e "y"

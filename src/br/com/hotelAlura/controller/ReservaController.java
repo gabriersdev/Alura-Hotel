@@ -30,6 +30,14 @@ public class ReservaController {
         return this.reservaDao.calcularPeriodo(entrada, saida);
     }
 
+    public Boolean alterar(Reserva reserva){
+        try{
+            return this.reservaDao.alterar(reserva);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
     public List<Reserva> listar(){
         try {
             return this.reservaDao.listar();

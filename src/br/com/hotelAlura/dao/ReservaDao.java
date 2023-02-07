@@ -14,7 +14,12 @@ public class ReservaDao {
     private Connection connection;
 
     public ReservaDao(Connection connection) {
-        this.connection = connection;
+        try{
+            this.connection = connection;
+            this.connection.setAutoCommit(false);
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
     }
 
     public Integer salvar(Reserva reserva) {
@@ -36,6 +41,7 @@ public class ReservaDao {
                 while (resultSet.next()) {
                     //Retornando o id para a referência Reserva
                     idCriado = resultSet.getInt(1);
+                    this.connection.commit();
                 }
 
             } catch (Exception e) {
