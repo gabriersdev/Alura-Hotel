@@ -264,16 +264,23 @@ public class Buscar extends JFrame {
         btnDeletar.add(lblExcluir);
         setResizable(false);
 
-        //Adicionando registros as tabelas de Reservas e de Hóspedes
         //Label das colunas
         modelo.addRow(new Object[]{"N.º de Reserva", "Data Check In", "Data Check Out", "Valor", "Forma de PGTO."});
         modeloHospedes.addRow(new Object[]{"N.º de Hóspede", "Nome", "Sobrenome", "Data de Nascimento", "Nacionalidade", "Telefone", "N.º de Reserva"});
 
+        //Adicionando registros as tabelas de Reservas e de Hóspedes
+        this.listarReservas(modelo);
+        this.listarHospede(modeloHospedes);
+    }
+
+    private void listarReservas(DefaultTableModel modelo){
         //Listando as reservas
         this.reservaController.listar().stream().forEach(reserva -> {
             modelo.addRow(new Object[]{reserva.getId(), reserva.getDataEntrada(), reserva.getDataSaida(), reserva.getValor(), reserva.getFormaPagamento()});
         });
+    }
 
+    public void listarHospede(DefaultTableModel modeloHospedes){
         //Listando os hóspedes
         this.hospedeController.listar().stream().forEach(hospede -> {
             modeloHospedes.addRow(new Object[]{hospede.getId(), hospede.getNome(), hospede.getSobrenome(), hospede.getData_nascimento(), hospede.getNacionalidade(), hospede.getTelefone(), hospede.getCod_reserva()});
