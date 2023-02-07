@@ -370,7 +370,7 @@ public class ReservasView extends JFrame {
         Reserva reserva = new Reserva(dataEntrada, dataSaida, this.txtValor.getText(), this.txtFormaPagamento.getSelectedItem().toString());
         Integer idCriado = this.reservaController.salvar(reserva);
 
-        if (idCriado != null) {
+        if (idCriado instanceof Integer) {
             Sucesso.main(null);
             JOptionPane.showMessageDialog(contentPane, "O Número da reserva foi: " + idCriado, "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
             status = true;
