@@ -2,15 +2,17 @@ package br.com.hotelAlura.views;
 
 import br.com.hotelAlura.controller.HospedeController;
 import br.com.hotelAlura.controller.ReservaController;
+import br.com.hotelAlura.model.Reserva;
 
-import java.awt.EventQueue;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Toolkit;
-import java.awt.event.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.sql.Date;
+import java.time.format.DateTimeFormatter;
 
 @SuppressWarnings("serial")
 public class Buscar extends JFrame {
@@ -26,6 +28,7 @@ public class Buscar extends JFrame {
     private HospedeController hospedeController;
     private ReservaController reservaController;
     int xMouse, yMouse;
+    DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     /**
      * Launch the application.
@@ -264,18 +267,30 @@ public class Buscar extends JFrame {
                 Integer reservaSelec = tbReservas.getSelectedRow();
                 Integer hospedeSelec = tbHospedes.getSelectedRow();
 
-                if(reservaSelec >= 0){
+                if (reservaSelec >= 0) {
                     System.out.println("Clicou em EDITAR. Tabela RESERVA");
-                    alterar();
-                    limparReservas();
-                    preencherTabelas();
+
+                    try{
+                        alterarReserva();
+                    }catch (Exception exception){
+                        JOptionPane.showMessageDialog(null, "Ocorreu um erro!. Mensagem: " + exception.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                    }finally {
+                        limparReservas();
+                        listarReservas();
+                    }
                 }
 
-                else if(hospedeSelec >= 0){
+                else if (hospedeSelec >= 0) {
                     System.out.println("Clicou em EDITAR. Tabela HOSPEDE");
-                    alterar();
-                    limparHospede();
-                    preencherTabelas();
+
+                    try{
+                        alterarHospede();
+                    }catch (Exception exception){
+                        JOptionPane.showMessageDialog(null, "Ocorreu um erro!. Mensagem: " + exception.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                    }finally {
+                        limparHospede();
+                        listarHospede();
+                    }
                 }
 
             }
@@ -289,18 +304,16 @@ public class Buscar extends JFrame {
                 Integer reservaSelec = tbReservas.getSelectedRow();
                 Integer hospedeSelec = tbHospedes.getSelectedRow();
 
-                if(reservaSelec >= 0){
+                if (reservaSelec >= 0) {
                     System.out.println("Clicou em DELETAR. Tabela RESERVA");
                     deletar();
                     limparReservas();
-                    preencherTabelas();
-                }
-
-                else if(hospedeSelec >= 0){
+                    listarReservas();
+                } else if (hospedeSelec >= 0) {
                     System.out.println("Clicou em DELETAR. Tabela HOSPEDE");
-                    alterar();
+                    deletar();
                     limparHospede();
-                    preencherTabelas();
+                    listarHospede();
                 }
 
             }
@@ -310,48 +323,59 @@ public class Buscar extends JFrame {
         preencherTabelas();
     }
 
-    private void preencherTabelas(){
+    private void preencherTabelas() {
         listarReservas();
         listarHospede();
     }
 
-    private void limparTabelas() {
-        limparReservas();
-        limparHospede();
-    }
-
-    public void limparReservas(){
+    public void limparReservas() {
         modelo.getDataVector().clear();
         tbReservas.updateUI();
     }
 
-    public void limparHospede(){
+    public void limparHospede() {
         modeloHospedes.getDataVector().clear();
         tbHospedes.updateUI();
     }
 
-    private void alterar() {
+    private void alterarReserva() {
+        Object objetoDaLinha = (Object) modelo.getValueAt(tbReservas.getSelectedRow(), 0);
+        if (objetoDaLinha instanceof Integer) {
+
+            Integer id = (Integer) objetoDaLinha;
+            String dataEntrada = String.valueOf(modelo.getValueAt(tbReservas.getSelectedRow(), 1));
+            String dataSaida = String.valueOf(modelo.getValueAt(tbReservas.getSelectedRow(), 2));
+            String valor = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 3);
+            String formaPagamento = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 4);
+
+            this.reservaController.alterar(new Reserva(id, Date.valueOf(dataEntrada), Date.valueOf(dataSaida), valor, formaPagamento));
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, selecionar o ID");
+        }
+    }
+
+    private void alterarHospede() {
 
     }
 
-    private void deletar(){
+    private void deletar() {
 
     }
 
-    private void listarReservas(){
+    private void listarReservas() {
         //modelo.addRow(new Object[]{"N.º de Reserva", "Data Check In", "Data Check Out", "Valor", "Forma de PGTO."});
 
         //Listando as reservas
-        try{
+        try {
             this.reservaController.listar().stream().forEach(reserva -> {
                 this.modelo.addRow(new Object[]{reserva.getId(), reserva.getDataEntrada(), reserva.getDataSaida(), reserva.getValor(), reserva.getFormaPagamento()});
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
 
-    public void listarHospede(){
+    public void listarHospede() {
         //modeloHospedes.addRow(new Object[]{"N.º de Hóspede", "Nome", "Sobrenome", "Data de Nascimento", "Nacionalidade", "Telefone", "N.º de Reserva"});
 
         //Listando os hóspedes
@@ -359,7 +383,7 @@ public class Buscar extends JFrame {
             this.hospedeController.listar().stream().forEach(hospede -> {
                 this.modeloHospedes.addRow(new Object[]{hospede.getId(), hospede.getNome(), hospede.getSobrenome(), hospede.getData_nascimento(), hospede.getNacionalidade(), hospede.getTelefone(), hospede.getCod_reserva()});
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
