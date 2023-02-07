@@ -1,5 +1,10 @@
 package br.com.hotelAlura.views;
 
+import br.com.hotelAlura.controller.HospedeController;
+import br.com.hotelAlura.controller.ReservaController;
+import br.com.hotelAlura.model.Hospede;
+import br.com.hotelAlura.model.Reserva;
+
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,6 +24,7 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class Buscar extends JFrame {
@@ -31,6 +37,8 @@ public class Buscar extends JFrame {
     private DefaultTableModel modeloHospedes;
     private JLabel labelAtras;
     private JLabel labelExit;
+    private HospedeController hospedeController;
+    private ReservaController reservaController;
     int xMouse, yMouse;
 
     /**
@@ -53,6 +61,10 @@ public class Buscar extends JFrame {
      * Create the frame.
      */
     public Buscar() {
+
+        this.hospedeController = new HospedeController();
+        this.reservaController = new ReservaController();
+
         setIconImage(Toolkit.getDefaultToolkit().getImage(Buscar.class.getResource("/images/lOGO-50PX.png")));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 910, 571);
@@ -251,6 +263,12 @@ public class Buscar extends JFrame {
         lblExcluir.setBounds(0, 0, 122, 35);
         btnDeletar.add(lblExcluir);
         setResizable(false);
+
+        //Adicionando registros as tabelas de Reservas e de Hóspedes
+        //Label das colunas
+        modelo.addRow(new Object[]{"N.º de Reserva", "Data Check In", "Data Check Out", "Valor", "Forma de PGTO."});
+        modeloHospedes.addRow(new Object[]{"N.º de Hóspede", "Nome", "Sobrenome", "Data de Nascimento", "Nacionalidade", "Telefone", "N.º de Reserva"});
+
     }
 
     //Código que permite movimentar a janela pela tela seguindo a posição de "x" e "y"
