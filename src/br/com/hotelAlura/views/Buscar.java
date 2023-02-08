@@ -281,7 +281,7 @@ public class Buscar extends JFrame {
                     try {
                         alterarHospede();
                     } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(null, "Ocorreu um erro! Tente novamente mais tarde" , "Erro", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Ocorreu um erro! Tente novamente mais tarde", "Erro", JOptionPane.ERROR_MESSAGE);
                     } finally {
                         limparHospede();
                         listarHospede();
@@ -343,50 +343,6 @@ public class Buscar extends JFrame {
         tbHospedes.updateUI();
     }
 
-    private void alterarReserva() {
-        Object objetoDaLinha = (Object) modelo.getValueAt(tbReservas.getSelectedRow(), 0);
-        if (objetoDaLinha instanceof Integer) {
-
-            Integer id = (Integer) objetoDaLinha;
-            String dataEntrada = String.valueOf(modelo.getValueAt(tbReservas.getSelectedRow(), 1));
-            String dataSaida = String.valueOf(modelo.getValueAt(tbReservas.getSelectedRow(), 2));
-            String valor = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 3);
-            String formaPagamento = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 4);
-
-            this.reservaController.alterar(new Reserva(id, Date.valueOf(dataEntrada), Date.valueOf(dataSaida), valor, formaPagamento));
-            JOptionPane.showMessageDialog(null, "Reserva alterada com sucesso", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "Por favor, selecione o campo ID");
-        }
-    }
-
-    private void alterarHospede() {
-        Object objetoDaLinha = (Object) modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 0);
-        if (objetoDaLinha instanceof Integer) {
-
-            Integer id = (Integer) objetoDaLinha;
-            String nome = (String) (modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 1));
-            String sobrenome = (String) (modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 2));
-            String dataNascimento = (String.valueOf(modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 3)));
-            String nacionalide = (String) modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 4);
-            String telefone = (String) modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 5);
-            Integer codReserva = (Integer) modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 6);
-
-            this.hospedeController.alterar(new Hospede(id, nome, sobrenome, Date.valueOf(dataNascimento), nacionalide, telefone, codReserva));
-            JOptionPane.showMessageDialog(null, "Registro do hóspede alterado com sucesso", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "Por favor, selecione o campo ID");
-        }
-    }
-
-    private void deletarReserva() {
-        //
-    }
-
-    private void deletarHospede() {
-        //
-    }
-
     private void listarReservas() {
         //modelo.addRow(new Object[]{"N.º de Reserva", "Data Check In", "Data Check Out", "Valor", "Forma de PGTO."});
 
@@ -398,6 +354,92 @@ public class Buscar extends JFrame {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    private void alterarReserva() {
+        Object objetoDaLinha = (Object) modelo.getValueAt(tbReservas.getSelectedRow(), 0);
+        if (objetoDaLinha instanceof Integer) {
+
+            Reserva reserva = recuperarReserva(objetoDaLinha);
+            this.reservaController.alterar(reserva);
+
+            JOptionPane.showMessageDialog(null, "Reserva alterada com sucesso", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, selecione o campo ID");
+        }
+    }
+
+    private void deletarReserva() {
+        Object objetoDaLinha = (Object) modelo.getValueAt(tbReservas.getSelectedRow(), 0);
+        if (objetoDaLinha instanceof Integer) {
+
+            Integer id = (Integer) objetoDaLinha;
+            //this.reservaController.
+
+            JOptionPane.showMessageDialog(null, "Reserva alterada com sucesso", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, selecione o campo ID");
+        }
+    }
+
+    private Reserva recuperarReserva(Object objetoDaLinha) {
+        Integer id = (Integer) objetoDaLinha;
+        String dataEntrada = String.valueOf(modelo.getValueAt(tbReservas.getSelectedRow(), 1));
+        String dataSaida = String.valueOf(modelo.getValueAt(tbReservas.getSelectedRow(), 2));
+        String valor = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 3);
+        String formaPagamento = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 4);
+
+        return new Reserva(id, Date.valueOf(dataEntrada), Date.valueOf(dataSaida), valor, formaPagamento);
+    }
+
+
+    private void alterarHospede() {
+        Object objetoDaLinha = (Object) modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 0);
+        if (objetoDaLinha instanceof Integer) {
+
+            Hospede hospede = recuperarHospede(objetoDaLinha);
+            this.hospedeController.alterar(hospede);
+
+            JOptionPane.showMessageDialog(null, "Registro do hóspede alterado com sucesso", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, selecione o campo ID");
+        }
+    }
+
+    private void deletarHospede() {
+        Object objetoDaLinha = (Object) modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 0);
+        if (objetoDaLinha instanceof Integer) {
+
+            Integer id = (Integer) objetoDaLinha;
+
+            if(id instanceof Integer){
+                Integer confirmacao = JOptionPane.showConfirmDialog(
+                        null,"Tem certeza que deseja apagar este hóspede?",
+                        "Hotel Alura",
+                        JOptionPane.YES_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
+
+                if(confirmacao == 0){
+                    this.hospedeController.deletar(recuperarHospede(objetoDaLinha));
+                    JOptionPane.showMessageDialog(null, "Registro do hóspede foi excluído com sucesso", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, selecione o campo ID");
+        }
+    }
+
+    private Hospede recuperarHospede(Object objetoDaLinha) {
+        Integer id = (Integer) objetoDaLinha;
+        String nome = (String) (modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 1));
+        String sobrenome = (String) (modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 2));
+        String dataNascimento = (String.valueOf(modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 3)));
+        String nacionalide = (String) modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 4);
+        String telefone = (String) modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 5);
+        Integer codReserva = (Integer) modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 6);
+
+        return new Hospede(id, nome, sobrenome, Date.valueOf(dataNascimento), nacionalide, telefone, codReserva);
     }
 
     public void listarHospede() {
@@ -412,6 +454,7 @@ public class Buscar extends JFrame {
             System.out.println(e);
         }
     }
+
 
     //Código que permite movimentar a janela pela tela seguindo a posição de "x" e "y"
     private void headerMousePressed(java.awt.event.MouseEvent evt) {

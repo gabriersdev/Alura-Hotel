@@ -39,7 +39,7 @@ public class HospedeController {
 
     public Boolean deletar(Hospede hospede){
         try{
-            return this.deletar(hospede);
+            return this.hospedeDao.deletar(hospede);
         }catch (Exception e){
             throw new RuntimeException(e);
         }
