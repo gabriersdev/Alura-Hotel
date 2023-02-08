@@ -21,6 +21,6 @@
 - Ter o MySQL e um Servidor Local instalado e configurado no computador
 - Ter o <a href="https://github.com/gabrieszin/Alura-Hotel/blob/master/database/hotel_alura.sql">banco de dados</a>
 - Executar o programa através da classe Main
-- Os dados de login padrão são: 
-  -<b>Usuário: </b>admin
+- Os dados de login padrão são: <br>
+  -<b>Usuário: </b>admin <br>
   -<b>Senha: </b>admin
