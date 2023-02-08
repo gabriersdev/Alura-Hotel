@@ -18,7 +18,7 @@
 
 - Fazer o download do repositório
 - Ter o MySQL e um Servidor Local instalado e configurado no computador
-- Ter o <a href="">banco de dados</a>
+- Ter o <a href="https://github.com/gabrieszin/Alura-Hotel/blob/master/database/hotel_alura.sql">banco de dados</a>
 - Executar o programa através da classe Main
 - Os dados de login padrão são: 
   <ul>
