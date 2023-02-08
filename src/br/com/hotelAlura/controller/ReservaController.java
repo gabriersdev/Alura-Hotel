@@ -29,34 +29,34 @@ public class ReservaController {
         return this.reservaDao.calcularPeriodo(entrada, saida);
     }
 
-    public Boolean alterar(Reserva reserva){
-        try{
+    public Boolean alterar(Reserva reserva) {
+        try {
             return this.reservaDao.alterar(reserva);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public List<Reserva> listar(){
+    public List<Reserva> listar() {
         try {
             return this.reservaDao.listar();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Boolean deletar(Reserva reserva){
-        try{
+    public Boolean deletar(Reserva reserva) {
+        try {
             return this.reservaDao.deletar(reserva);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public List<Reserva> pesquisar(String string){
-        try{
+    public List<Reserva> pesquisar(String string) {
+        try {
             return this.reservaDao.pesquisar(string);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

@@ -439,19 +439,19 @@ public class Buscar extends JFrame {
         return new Reserva(id, Date.valueOf(dataEntrada), Date.valueOf(dataSaida), valor, formaPagamento);
     }
 
-    private void pesquisarReserva(String txtBusca){
-        try{
+    private void pesquisarReserva(String txtBusca) {
+        try {
             List<Reserva> reservas = reservaController.pesquisar(txtBusca);
             limparReservas();
 
-            if(!reservas.isEmpty()){
+            if (!reservas.isEmpty()) {
                 listarReservas(reservas);
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Nenhuma reserva foi encontrada.", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
                 listarReservas();
             }
 
-        }catch (Exception exception){
+        } catch (Exception exception) {
             JOptionPane.showMessageDialog(null, "Ocorreu um erro! Tente novamente mais tarde", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -515,19 +515,19 @@ public class Buscar extends JFrame {
         }
     }
 
-    private void pesquisarHospede(String txtBusca){
-        try{
+    private void pesquisarHospede(String txtBusca) {
+        try {
             List<Hospede> hospedes = hospedeController.pesquisar(txtBusca);
             limparHospede();
 
-            if(!hospedes.isEmpty()){
+            if (!hospedes.isEmpty()) {
                 listarHospede(hospedes);
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Nenhum hóspede foi encontrado.", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
                 listarHospede();
             }
 
-        }catch (Exception exception){
+        } catch (Exception exception) {
             JOptionPane.showMessageDialog(null, "Ocorreu um erro! Tente novamente mais tarde", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }

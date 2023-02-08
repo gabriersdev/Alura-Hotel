@@ -1,6 +1,5 @@
 package br.com.hotelAlura.dao;
 
-import br.com.hotelAlura.factory.ConnectionFactory;
 import br.com.hotelAlura.model.Reserva;
 
 import java.sql.*;
@@ -14,10 +13,10 @@ public class ReservaDao {
     private Connection connection;
 
     public ReservaDao(Connection connection) {
-        try{
+        try {
             this.connection = connection;
             this.connection.setAutoCommit(false);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -169,7 +168,7 @@ public class ReservaDao {
         return status;
     }
 
-    public List<Reserva> pesquisar(String string) throws SQLException{
+    public List<Reserva> pesquisar(String string) throws SQLException {
         List<Reserva> reservas = new ArrayList<>();
         String sql = """
                 SELECT 
@@ -186,7 +185,7 @@ public class ReservaDao {
                 OR forma_pagamento_reserva LIKE ?;
                 """;
 
-        try(PreparedStatement pstm = this.connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = this.connection.prepareStatement(sql)) {
             pstm.setString(1, "%" + string + "%");
             pstm.setString(2, "%" + string + "%");
             pstm.setString(3, "%" + string + "%");
@@ -195,8 +194,8 @@ public class ReservaDao {
 
             pstm.execute();
 
-            try(ResultSet resultSet = pstm.getResultSet()){
-                while (resultSet.next()){
+            try (ResultSet resultSet = pstm.getResultSet()) {
+                while (resultSet.next()) {
                     reservas.add(
                             new Reserva(
                                     resultSet.getInt("id_reserva"),

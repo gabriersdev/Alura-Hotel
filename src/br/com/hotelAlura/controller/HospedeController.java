@@ -22,33 +22,33 @@ public class HospedeController {
     }
 
     public List<Hospede> listar() {
-        try{
+        try {
             return this.hospedeDao.listar();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     public Boolean alterar(Hospede hospede) {
-        try{
+        try {
             return this.hospedeDao.alterar(hospede);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Boolean deletar(Hospede hospede){
-        try{
+    public Boolean deletar(Hospede hospede) {
+        try {
             return this.hospedeDao.deletar(hospede);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public List<Hospede> pesquisar(String string){
-        try{
+    public List<Hospede> pesquisar(String string) {
+        try {
             return this.hospedeDao.pesquisar(string);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

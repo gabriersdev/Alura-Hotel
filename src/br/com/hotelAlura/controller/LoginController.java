@@ -11,9 +11,9 @@ public class LoginController {
     private LoginDao loginDao;
 
     public LoginController() {
-        try{
+        try {
             this.loginDao = new LoginDao(new ConnectionFactory().conexao());
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
