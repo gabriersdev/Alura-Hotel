@@ -300,21 +300,21 @@ public class Buscar extends JFrame {
                 Integer hospedeSelec = tbHospedes.getSelectedRow();
 
                 if (reservaSelec >= 0) {
-                    System.out.println("Clicou em DELETAR. Tabela RESERVA");
                     try {
                         deletarReserva();
                     } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(null, "Ocorreu um erro!. Mensagem: " + exception.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Ocorreu um erro! Tente novamente mais tarde", "Erro", JOptionPane.ERROR_MESSAGE);
                     } finally {
                         limparReservas();
                         listarReservas();
                     }
                 } else if (hospedeSelec >= 0) {
-                    System.out.println("Clicou em DELETAR. Tabela HOSPEDE");
                     try {
                         deletarHospede();
                     } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(null, "Ocorreu um erro!. Mensagem: " + exception.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                        exception.getStackTrace();
+                        System.out.println(exception.getMessage());
+                        JOptionPane.showMessageDialog(null, "Ocorreu um erro! Tente novamente mais tarde", "Erro", JOptionPane.ERROR_MESSAGE);
                     } finally {
                         limparHospede();
                         listarHospede();
@@ -374,9 +374,23 @@ public class Buscar extends JFrame {
         if (objetoDaLinha instanceof Integer) {
 
             Integer id = (Integer) objetoDaLinha;
-            //this.reservaController.
+            if (id instanceof Integer) {
 
-            JOptionPane.showMessageDialog(null, "Reserva alterada com sucesso", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
+                Integer confirmacao = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja apagar esta reserva?", "Hotel Alura", JOptionPane.YES_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                if (confirmacao == 0) {
+                    Boolean sucesso = this.reservaController.deletar(recuperarReserva(objetoDaLinha));
+                    if (sucesso) {
+                        JOptionPane.showMessageDialog(null, "Reserva excluída com sucesso", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Há um hóspede nesta reserva. Para apagá-la, primeiro é preciso excluir o hóspede.", "Hotel Alura", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Por favor, selecione o campo ID");
+            }
+
         } else {
             JOptionPane.showMessageDialog(this, "Por favor, selecione o campo ID");
         }
@@ -409,20 +423,17 @@ public class Buscar extends JFrame {
     private void deletarHospede() {
         Object objetoDaLinha = (Object) modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 0);
         if (objetoDaLinha instanceof Integer) {
-
             Integer id = (Integer) objetoDaLinha;
 
             if (id instanceof Integer) {
-                Integer confirmacao = JOptionPane.showConfirmDialog(
-                        null, "Tem certeza que deseja apagar este hóspede?",
-                        "Hotel Alura",
-                        JOptionPane.YES_OPTION,
-                        JOptionPane.QUESTION_MESSAGE);
+                Integer confirmacao = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja apagar este hóspede?", "Hotel Alura", JOptionPane.YES_OPTION, JOptionPane.QUESTION_MESSAGE);
 
                 if (confirmacao == 0) {
                     this.hospedeController.deletar(recuperarHospede(objetoDaLinha));
                     JOptionPane.showMessageDialog(null, "Registro do hóspede foi excluído com sucesso", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
                 }
+            } else {
+                JOptionPane.showMessageDialog(this, "Por favor, selecione o campo ID");
             }
 
         } else {

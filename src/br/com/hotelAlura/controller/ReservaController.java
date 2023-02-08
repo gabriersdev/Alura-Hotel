@@ -5,7 +5,6 @@ import br.com.hotelAlura.factory.ConnectionFactory;
 import br.com.hotelAlura.model.Reserva;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -46,5 +45,11 @@ public class ReservaController {
         }
     }
 
-    //public void listar()
+    public Boolean deletar(Reserva reserva){
+        try{
+            return this.reservaDao.deletar(reserva);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
 }
