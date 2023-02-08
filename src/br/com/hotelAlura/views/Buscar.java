@@ -448,7 +448,7 @@ public class Buscar extends JFrame {
                 listarReservas(reservas);
             } else {
                 JOptionPane.showMessageDialog(null, "Nenhuma reserva foi encontrada.", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
-                listarReservas();
+                //listarReservas();
             }
 
         } catch (Exception exception) {
@@ -524,7 +524,7 @@ public class Buscar extends JFrame {
                 listarHospede(hospedes);
             } else {
                 JOptionPane.showMessageDialog(null, "Nenhum hóspede foi encontrado.", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
-                listarHospede();
+                //listarHospede();
             }
 
         } catch (Exception exception) {
