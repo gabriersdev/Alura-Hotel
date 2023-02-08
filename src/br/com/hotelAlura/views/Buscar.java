@@ -4,6 +4,7 @@ import br.com.hotelAlura.controller.HospedeController;
 import br.com.hotelAlura.controller.ReservaController;
 import br.com.hotelAlura.model.Hospede;
 import br.com.hotelAlura.model.Reserva;
+import br.com.hotelAlura.views.utilitarios.Utilitarios;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -14,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.sql.Date;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class Buscar extends JFrame {
@@ -260,6 +262,24 @@ public class Buscar extends JFrame {
         btnDeletar.add(lblExcluir);
         setResizable(false);
 
+        //Ação ao clicar em Buscar
+        btnbuscar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if (txtBuscar.getText() instanceof String && !Utilitarios.isEmpty(txtBuscar.getText())) {
+
+                    String txtBusca = (txtBuscar.getText()).trim();
+                    pesquisarReserva(txtBusca);
+                    pesquisarHospede(txtBusca);
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Por favor, preencha o campo de busca");
+                }
+
+            }
+        });
+
         //Ação ao clicar em Editar
         btnEditar.addMouseListener(new MouseAdapter() {
             @Override
@@ -333,12 +353,12 @@ public class Buscar extends JFrame {
         listarHospede();
     }
 
-    public void limparReservas() {
+    private void limparReservas() {
         modelo.getDataVector().clear();
         tbReservas.updateUI();
     }
 
-    public void limparHospede() {
+    private void limparHospede() {
         modeloHospedes.getDataVector().clear();
         tbHospedes.updateUI();
     }
@@ -349,6 +369,19 @@ public class Buscar extends JFrame {
         //Listando as reservas
         try {
             this.reservaController.listar().stream().forEach(reserva -> {
+                this.modelo.addRow(new Object[]{reserva.getId(), reserva.getDataEntrada(), reserva.getDataSaida(), reserva.getValor(), reserva.getFormaPagamento()});
+            });
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    private void listarReservas(List<Reserva> reservas) {
+        //modelo.addRow(new Object[]{"N.º de Reserva", "Data Check In", "Data Check Out", "Valor", "Forma de PGTO."});
+
+        //Listando as reservas
+        try {
+            reservas.stream().forEach(reserva -> {
                 this.modelo.addRow(new Object[]{reserva.getId(), reserva.getDataEntrada(), reserva.getDataSaida(), reserva.getValor(), reserva.getFormaPagamento()});
             });
         } catch (Exception e) {
@@ -406,6 +439,22 @@ public class Buscar extends JFrame {
         return new Reserva(id, Date.valueOf(dataEntrada), Date.valueOf(dataSaida), valor, formaPagamento);
     }
 
+    private void pesquisarReserva(String txtBusca){
+        try{
+            List<Reserva> reservas = reservaController.pesquisar(txtBusca);
+            limparReservas();
+
+            if(!reservas.isEmpty()){
+                listarReservas(reservas);
+            }else{
+                JOptionPane.showMessageDialog(null, "Nenhuma reserva foi encontrada.", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
+                listarReservas();
+            }
+
+        }catch (Exception exception){
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro! Tente novamente mais tarde", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void alterarHospede() {
         Object objetoDaLinha = (Object) modeloHospedes.getValueAt(tbHospedes.getSelectedRow(), 0);
@@ -453,7 +502,7 @@ public class Buscar extends JFrame {
         return new Hospede(id, nome, sobrenome, Date.valueOf(dataNascimento), nacionalide, telefone, codReserva);
     }
 
-    public void listarHospede() {
+    private void listarHospede() {
         //modeloHospedes.addRow(new Object[]{"N.º de Hóspede", "Nome", "Sobrenome", "Data de Nascimento", "Nacionalidade", "Telefone", "N.º de Reserva"});
 
         //Listando os hóspedes
@@ -466,6 +515,35 @@ public class Buscar extends JFrame {
         }
     }
 
+    private void pesquisarHospede(String txtBusca){
+        try{
+            List<Hospede> hospedes = hospedeController.pesquisar(txtBusca);
+            limparHospede();
+
+            if(!hospedes.isEmpty()){
+                listarHospede(hospedes);
+            }else{
+                JOptionPane.showMessageDialog(null, "Nenhum hóspede foi encontrado.", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
+                listarHospede();
+            }
+
+        }catch (Exception exception){
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro! Tente novamente mais tarde", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void listarHospede(List<Hospede> hospedes) {
+        //modeloHospedes.addRow(new Object[]{"N.º de Hóspede", "Nome", "Sobrenome", "Data de Nascimento", "Nacionalidade", "Telefone", "N.º de Reserva"});
+
+        //Listando os hóspedes
+        try {
+            hospedes.stream().forEach(hospede -> {
+                this.modeloHospedes.addRow(new Object[]{hospede.getId(), hospede.getNome(), hospede.getSobrenome(), hospede.getData_nascimento(), hospede.getNacionalidade(), hospede.getTelefone(), hospede.getCod_reserva()});
+            });
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
     //Código que permite movimentar a janela pela tela seguindo a posição de "x" e "y"
     private void headerMousePressed(java.awt.event.MouseEvent evt) {

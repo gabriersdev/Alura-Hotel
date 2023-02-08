@@ -45,4 +45,12 @@ public class HospedeController {
         }
     }
 
+    public List<Hospede> pesquisar(String string){
+        try{
+            return this.hospedeDao.pesquisar(string);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
 }

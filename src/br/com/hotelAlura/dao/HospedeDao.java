@@ -1,6 +1,5 @@
 package br.com.hotelAlura.dao;
 
-import br.com.hotelAlura.factory.ConnectionFactory;
 import br.com.hotelAlura.model.Hospede;
 
 import java.sql.*;
@@ -213,17 +212,61 @@ public class HospedeDao {
         return status;
     }
 
-    public static void main(String[] args) throws SQLException {
-        HospedeDao hospedeDao = new HospedeDao(new ConnectionFactory().conexao());
+    public List<Hospede> pesquisar(String string) throws SQLException {
+        List<Hospede> hospedes = new ArrayList<>();
+        String sql = """
+                SELECT 
+                id_hospede, 
+                nome_hospede, 
+                sobrenome_hospede, 
+                data_nascimento_hospede, 
+                nacionalidade_hospede, 
+                telefone_hospede, 
+                cod_reserva_hospede 
+                FROM hospedes 
+                WHERE 
+                id_hospede = ? 
+                OR nome_hospede LIKE ? 
+                OR sobrenome_hospede LIKE ? 
+                OR data_nascimento_hospede LIKE ? 
+                OR nacionalidade_hospede LIKE ? 
+                OR telefone_hospede LIKE ?
+                OR cod_reserva_hospede LIKE ?;
+                """;
 
-        //Hospede hospede = new Hospede("Gabriel", "Ribeiro", Date.valueOf("2004-01-01"), "Brasileiro", "31123456789", 1);
-        //Hospede hospede1 = hospedeDao.salvar(hospede);
-        //System.out.println(hospede1.getId());
+        try (PreparedStatement pstm = this.connection.prepareStatement(sql)) {
+            pstm.setString(1, "%" + string + "%");
+            pstm.setString(2, "%" + string + "%");
+            pstm.setString(3, "%" + string + "%");
+            pstm.setString(4, "%" + string + "%");
+            pstm.setString(5, "%" + string + "%");
+            pstm.setString(6, "%" + string + "%");
+            pstm.setString(7, "%" + string + "%");
 
-        List<Hospede> hospedes = hospedeDao.listar();
-        hospedes.forEach(hospedeList -> {
-            System.out.println(hospedeList.getNome());
-        });
+            pstm.execute();
 
+            try (ResultSet resultSet = pstm.getResultSet()) {
+                while (resultSet.next()) {
+
+                    hospedes.add(
+                            new Hospede(
+                                    resultSet.getInt("id_hospede"),
+                                    resultSet.getString("nome_hospede"),
+                                    resultSet.getString("sobrenome_hospede"),
+                                    resultSet.getDate("data_nascimento_hospede"),
+                                    resultSet.getString("nacionalidade_hospede"),
+                                    resultSet.getString("telefone_hospede"),
+                                    resultSet.getInt("cod_reserva_hospede")
+                            ));
+
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("aqui");
+            System.out.println(e);
+        }
+
+        return hospedes;
     }
 }

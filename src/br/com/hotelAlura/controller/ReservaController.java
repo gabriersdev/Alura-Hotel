@@ -52,4 +52,12 @@ public class ReservaController {
             throw new RuntimeException(e);
         }
     }
+
+    public List<Reserva> pesquisar(String string){
+        try{
+            return this.reservaDao.pesquisar(string);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
 }

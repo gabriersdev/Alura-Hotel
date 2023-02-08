@@ -169,18 +169,47 @@ public class ReservaDao {
         return status;
     }
 
-    public static void main(String[] args) {
-        ReservaDao reservaDao = new ReservaDao(new ConnectionFactory().conexao());
-        List<Reserva> reservas = reservaDao.listar();
+    public List<Reserva> pesquisar(String string) throws SQLException{
+        List<Reserva> reservas = new ArrayList<>();
+        String sql = """
+                SELECT 
+                id_reserva, 
+                data_entrada_reserva, 
+                data_saida_reserva, 
+                valor_saida_reserva, 
+                forma_pagamento_reserva 
+                FROM reservas 
+                WHERE id_reserva LIKE ? 
+                OR data_entrada_reserva LIKE ? 
+                OR data_saida_reserva LIKE ?
+                OR valor_saida_reserva LIKE ? 
+                OR forma_pagamento_reserva LIKE ?;
+                """;
 
-        /*
-        reservas.forEach(reserva -> {
-            System.out.println(reserva.getId());
-            if(reserva.getId() == 2){
-                reserva.setFormaPagamento("Dinheiro");
-                reservaDao.alterarReserva(reserva);
+        try(PreparedStatement pstm = this.connection.prepareStatement(sql)){
+            pstm.setString(1, "%" + string + "%");
+            pstm.setString(2, "%" + string + "%");
+            pstm.setString(3, "%" + string + "%");
+            pstm.setString(4, "%" + string + "%");
+            pstm.setString(5, "%" + string + "%");
+
+            pstm.execute();
+
+            try(ResultSet resultSet = pstm.getResultSet()){
+                while (resultSet.next()){
+                    reservas.add(
+                            new Reserva(
+                                    resultSet.getInt("id_reserva"),
+                                    resultSet.getDate("data_entrada_reserva"),
+                                    resultSet.getDate("data_saida_reserva"),
+                                    resultSet.getString("valor_saida_reserva"),
+                                    resultSet.getString("forma_pagamento_reserva")
+                            )
+                    );
+                }
             }
-        });
-         */
+        }
+
+        return reservas;
     }
 }
