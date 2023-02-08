@@ -412,14 +412,14 @@ public class Buscar extends JFrame {
 
             Integer id = (Integer) objetoDaLinha;
 
-            if(id instanceof Integer){
+            if (id instanceof Integer) {
                 Integer confirmacao = JOptionPane.showConfirmDialog(
-                        null,"Tem certeza que deseja apagar este hóspede?",
+                        null, "Tem certeza que deseja apagar este hóspede?",
                         "Hotel Alura",
                         JOptionPane.YES_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
 
-                if(confirmacao == 0){
+                if (confirmacao == 0) {
                     this.hospedeController.deletar(recuperarHospede(objetoDaLinha));
                     JOptionPane.showMessageDialog(null, "Registro do hóspede foi excluído com sucesso", "Hotel Alura", JOptionPane.INFORMATION_MESSAGE);
                 }
