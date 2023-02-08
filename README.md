@@ -17,11 +17,10 @@
 ## Para usar é preciso:
 
 - Fazer o download do repositório
+- Ter instalado o Java na versão 17 ou superior*
 - Ter o MySQL e um Servidor Local instalado e configurado no computador
 - Ter o <a href="https://github.com/gabrieszin/Alura-Hotel/blob/master/database/hotel_alura.sql">banco de dados</a>
 - Executar o programa através da classe Main
 - Os dados de login padrão são: 
-  <ul>
-    <li><b>Usuário: </b>admin</li>
-    <li><b>Senha: </b>admin</li>
-  </ul>
+  -<b>Usuário: </b>admin
+  -<b>Senha: </b>admin
