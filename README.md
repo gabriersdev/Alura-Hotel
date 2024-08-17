@@ -1,5 +1,8 @@
 # Challenge ONE Hotel Alura
 
+![Captura da tela inicial do projeto](./screen-1.png)
+![Captura da tela de consulta de hóspedes](./screen-2.png)
+
 ## Tecnologias Utilizadas:
 
 - Java
